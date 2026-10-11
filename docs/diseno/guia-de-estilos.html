@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de Estilos y Sistema de Diseño – Trivia Colombia</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <style>
+    body { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; background: #F8FAFC; }
+    .seccion-guia { margin-bottom: 3.5rem; background: #FFF; padding: 2rem; border-radius: 16px; border: 1px solid #E2E8F0; }
+    .colores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .color-muestra { border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .color-caja { height: 90px; width: 100%; display: flex; align-items: flex-end; padding: 0.5rem; font-weight: bold; font-family: monospace; }
+    .color-info { padding: 0.75rem; background: #FFF; font-size: 0.85rem; }
+    .botones-muestra { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  </style>
+</head>
+<body>
+  <header style="margin-bottom: 2rem; border-bottom: 3px solid #003893; padding-bottom: 1rem;">
+    <h1 style="color: #003893; font-family: 'Montserrat', sans-serif;">🇨🇴 Guía de Estilos & Tokens de Diseño</h1>
+    <p style="color: #64748B;">Trivia Colombia – Parcial Desarrollo Full Stack | UDES | Docente: Carlos Carrascal</p>
+  </header>
+
+  <!-- 1. Paleta de Colores -->
+  <section class="seccion-guia">
+    <h2 style="margin-bottom: 1rem; color: #0F172A;">1. Paleta Institucional Inspirada en la Bandera de Colombia (Sección 7.3)</h2>
+    <div class="colores-grid">
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #FCD116; color: #000;">#FCD116</div>
+        <div class="color-info"><strong>Amarillo Colombia</strong><br>Acentos, badges, estrellas y destaques primarios.</div>
+      </div>
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #003893; color: #FFF;">#003893</div>
+        <div class="color-info"><strong>Azul Colombia</strong><br>Encabezados, botones primarios e identidad central.</div>
+      </div>
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #CE1126; color: #FFF;">#CE1126</div>
+        <div class="color-info"><strong>Rojo Colombia</strong><br>Alertas, respuestas incorrectas y tiempo crítico.</div>
+      </div>
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #2E9E5B; color: #FFF;">#2E9E5B</div>
+        <div class="color-info"><strong>Verde Acierto</strong><br>Respuestas correctas, éxito y confirmación.</div>
+      </div>
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #0F172A; color: #FFF;">#0F172A</div>
+        <div class="color-info"><strong>Texto Principal</strong><br>Alto contraste sobre fondos claros (Ratio 14.8:1).</div>
+      </div>
+      <div class="color-muestra">
+        <div class="color-caja" style="background: #F4F7FB; color: #000;">#F4F7FB</div>
+        <div class="color-info"><strong>Fondo Superficie</strong><br>Fondos claros de alta legibilidad para el usuario.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Tipografía -->
+  <section class="seccion-guia">
+    <h2 style="margin-bottom: 1rem; color: #0F172A;">2. Escala Tipográfica (Google Fonts: Poppins y Montserrat)</h2>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <div>
+        <span style="font-size: 0.8rem; color: #64748B;">H1 - Encabezados Mayores (Montserrat 800 - 2.2rem)</span>
+        <h1 style="font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 800; color: #003893;">Trivia Colombia: Juego de Saberes</h1>
+      </div>
+      <div>
+        <span style="font-size: 0.8rem; color: #64748B;">H2 - Subtítulos de Sección (Montserrat 700 - 1.5rem)</span>
+        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0F172A;">¿Cuál es la capital del departamento de Santander?</h2>
+      </div>
+      <div>
+        <span style="font-size: 0.8rem; color: #64748B;">Body - Texto Regular de Lectura (Poppins 400/500 - 1rem)</span>
+        <p style="font-family: 'Poppins', sans-serif; font-size: 1rem; color: #475569;">
+          Bucaramanga es la capital de Santander y es conocida nacionalmente como "La Ciudad Bonita", destacándose por sus parques urbanos y su pujanza económica.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Estados de Botones -->
+  <section class="seccion-guia">
+    <h2 style="margin-bottom: 1rem; color: #0F172A;">3. Estados de Botones y Componentes Táctiles (Mínimo 44px de alto)</h2>
+    <p style="margin-bottom: 1.5rem; color: #64748B;">Cumple con el criterio WCAG AAA de tamaño de objetivo táctil (Touch Target >= 44x44 px).</p>
+    
+    <div class="botones-muestra">
+      <button class="btn btn-primary" type="button">Normal Primario</button>
+      <button class="btn btn-primary" style="background-color: #00225C;" type="button">Hover Primario</button>
+      <button class="btn btn-accent" type="button">Acento Amarillo</button>
+      <button class="btn btn-secondary" type="button">Secundario</button>
+      <button class="btn btn-primary" disabled type="button">Deshabilitado</button>
+    </div>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.15rem;">Estados de Opciones de Trivia:</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+      <div class="opcion-btn">
+        <span class="opcion-letra">A</span>
+        <span class="opcion-texto">Estado Normal</span>
+      </div>
+      <div class="opcion-btn correcta">
+        <span class="opcion-letra">B</span>
+        <span class="opcion-texto">Estado Correcto (+100 pts)</span>
+      </div>
+      <div class="opcion-btn incorrecta">
+        <span class="opcion-letra">C</span>
+        <span class="opcion-texto">Estado Incorrecto</span>
+      </div>
+      <div class="opcion-btn descartada-5050">
+        <span class="opcion-letra">D</span>
+        <span class="opcion-texto">Descartada (50/50)</span>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

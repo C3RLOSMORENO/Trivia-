@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="100%" height="100%" style="background: #F1F5F9; font-family: sans-serif;">
+  <defs>
+    <filter id="wfShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <text x="50" y="50" font-size="28" font-weight="bold" fill="#334155">WIREFRAMES DE BAJA FIDELIDAD – TRIVIA COLOMBIA (Escala de Grises)</text>
+  <text x="50" y="80" font-size="16" fill="#64748B">Distribución espacial y arquitectura de información de pantallas clave</text>
+
+  <!-- PANTALLA 1: INICIO (Wireframe) -->
+  <g transform="translate(50, 110)" filter="url(#wfShadow)">
+    <rect width="450" height="380" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">1. Pantalla Inicio</text>
+    
+    <!-- Logo placeholder -->
+    <rect x="145" y="60" width="160" height="45" rx="4" fill="#E2E8F0" stroke="#CBD5E1" stroke-dasharray="4 4"/>
+    <text x="180" y="88" font-size="13" fill="#64748B">[LOGO]</text>
+    
+    <!-- Input jugador -->
+    <rect x="50" y="140" width="350" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+    <text x="65" y="165" font-size="13" fill="#94A3B8">Nombre del jugador...</text>
+
+    <!-- Botón Jugar -->
+    <rect x="50" y="200" width="350" height="44" rx="4" fill="#64748B"/>
+    <text x="175" y="228" font-size="15" font-weight="bold" fill="#FFFFFF">¡JUGAR!</text>
+
+    <!-- Botones Secundarios -->
+    <rect x="50" y="260" width="165" height="40" rx="4" fill="#E2E8F0"/>
+    <text x="90" y="285" font-size="12" fill="#475569">Instrucciones</text>
+
+    <rect x="235" y="260" width="165" height="40" rx="4" fill="#E2E8F0"/>
+    <text x="280" y="285" font-size="12" fill="#475569">Ranking</text>
+  </g>
+
+  <!-- PANTALLA 2: CONFIGURACIÓN (Wireframe) -->
+  <g transform="translate(550, 110)" filter="url(#wfShadow)">
+    <rect width="450" height="380" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">2. Pantalla Configuración</text>
+
+    <!-- Cuadrícula Categorías -->
+    <text x="25" y="65" font-size="13" font-weight="bold" fill="#475569">Selecciona Categoría:</text>
+    <rect x="25" y="80" width="125" height="60" rx="4" fill="#E2E8F0"/>
+    <text x="55" y="115" font-size="11" fill="#475569">Todas</text>
+    <rect x="160" y="80" width="125" height="60" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="185" y="115" font-size="11" fill="#475569">Geografía</text>
+    <rect x="295" y="80" width="125" height="60" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="325" y="115" font-size="11" fill="#475569">Historia</text>
+
+    <text x="25" y="175" font-size="13" font-weight="bold" fill="#475569">Dificultad:</text>
+    <rect x="25" y="190" width="125" height="45" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="65" y="218" font-size="12" fill="#475569">Fácil</text>
+    <rect x="160" y="190" width="125" height="45" rx="4" fill="#E2E8F0"/>
+    <text x="200" y="218" font-size="12" fill="#475569">Medio</text>
+    <rect x="295" y="190" width="125" height="45" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="335" y="218" font-size="12" fill="#475569">Difícil</text>
+
+    <rect x="25" y="300" width="400" height="44" rx="4" fill="#64748B"/>
+    <text x="160" y="328" font-size="14" font-weight="bold" fill="#FFFFFF">Comenzar Partida</text>
+  </g>
+
+  <!-- PANTALLA 3: JUEGO (Wireframe) -->
+  <g transform="translate(1050, 110)" filter="url(#wfShadow)">
+    <rect width="450" height="380" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">3. Pantalla Juego (Pregunta Activa)</text>
+
+    <!-- Header status -->
+    <text x="25" y="65" font-size="12" fill="#64748B">Pregunta: 1 / 10</text>
+    <circle cx="225" cy="70" r="22" fill="#E2E8F0" stroke="#94A3B8" stroke-width="2"/>
+    <text x="217" y="75" font-size="14" font-weight="bold" fill="#334155">20</text>
+    <text x="345" y="65" font-size="12" fill="#64748B">Puntos: 0 pts</text>
+
+    <!-- Comodines -->
+    <rect x="25" y="105" width="80" height="28" rx="4" fill="#E2E8F0"/>
+    <text x="35" y="123" font-size="11" fill="#475569">50 / 50</text>
+    <rect x="115" y="105" width="80" height="28" rx="4" fill="#E2E8F0"/>
+    <text x="125" y="123" font-size="11" fill="#475569">+10s</text>
+
+    <!-- Enunciado -->
+    <rect x="25" y="145" width="400" height="50" rx="4" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="35" y="175" font-size="13" font-weight="bold" fill="#334155">[Enunciado de la Pregunta]</text>
+
+    <!-- 4 Opciones Rejilla -->
+    <rect x="25" y="210" width="190" height="44" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="35" y="238" font-size="12" fill="#475569">A. Opción 1</text>
+    <rect x="235" y="210" width="190" height="44" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="245" y="238" font-size="12" fill="#475569">B. Opción 2</text>
+    <rect x="25" y="265" width="190" height="44" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="35" y="293" font-size="12" fill="#475569">C. Opción 3</text>
+    <rect x="235" y="265" width="190" height="44" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="245" y="293" font-size="12" fill="#475569">D. Opción 4</text>
+  </g>
+
+  <!-- PANTALLA 4: RETROALIMENTACIÓN (Wireframe) -->
+  <g transform="translate(50, 530)" filter="url(#wfShadow)">
+    <rect width="450" height="420" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">4. Retroalimentación Inmediata</text>
+
+    <rect x="25" y="55" width="400" height="60" rx="4" fill="#E2E8F0"/>
+    <text x="40" y="80" font-size="14" font-weight="bold" fill="#334155">[Opciones coloreadas: Verde correcta / Roja elegida]</text>
+
+    <!-- Caja de explicación -->
+    <rect x="25" y="130" width="400" height="150" rx="6" fill="#F8FAFC" stroke="#94A3B8"/>
+    <text x="45" y="165" font-size="14" font-weight="bold" fill="#334155">¡Respuesta Correcta! (+160 pts)</text>
+    <text x="45" y="195" font-size="12" fill="#64748B">Explicación pedagógica del acierto sobre la historia...</text>
+
+    <rect x="260" y="320" width="165" height="44" rx="4" fill="#64748B"/>
+    <text x="280" y="347" font-size="13" font-weight="bold" fill="#FFFFFF">Siguiente Pregunta ➡️</text>
+  </g>
+
+  <!-- PANTALLA 5: RESULTADO (Wireframe) -->
+  <g transform="translate(550, 530)" filter="url(#wfShadow)">
+    <rect width="450" height="420" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">5. Pantalla Resultado Final</text>
+
+    <text x="195" y="90" font-size="28" font-weight="bold" fill="#334155">🏆</text>
+    <text x="150" y="140" font-size="32" font-weight="bold" fill="#334155">1420 pts</text>
+
+    <rect x="30" y="170" width="180" height="50" rx="4" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="45" y="200" font-size="12" fill="#475569">Aciertos: 8 / 10</text>
+    <rect x="240" y="170" width="180" height="50" rx="4" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="255" y="200" font-size="12" fill="#475569">Tiempo Total: 112s</text>
+
+    <!-- Botones -->
+    <rect x="30" y="240" width="180" height="44" rx="4" fill="#64748B"/>
+    <text x="70" y="267" font-size="13" font-weight="bold" fill="#FFFFFF">Jugar de Nuevo</text>
+    <rect x="240" y="240" width="180" height="44" rx="4" fill="#E2E8F0"/>
+    <text x="285" y="267" font-size="13" fill="#475569">Ver Ranking</text>
+  </g>
+
+  <!-- PANTALLA 6: RANKING Y ESTADÍSTICAS (Wireframe) -->
+  <g transform="translate(1050, 530)" filter="url(#wfShadow)">
+    <rect width="450" height="420" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="35" rx="8" fill="#E2E8F0"/>
+    <text x="15" y="23" font-size="13" font-weight="bold" fill="#475569">6. Ranking y Estadísticas Top 10</text>
+
+    <!-- Tabs -->
+    <rect x="25" y="50" width="120" height="30" rx="4" fill="#64748B"/>
+    <text x="45" y="70" font-size="12" fill="#FFFFFF">Top 10</text>
+    <rect x="155" y="50" width="120" height="30" rx="4" fill="#E2E8F0"/>
+    <text x="170" y="70" font-size="12" fill="#475569">Mis Stats</text>
+
+    <!-- Tabla -->
+    <rect x="25" y="95" width="400" height="210" rx="4" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <line x1="25" y1="130" x2="425" y2="130" stroke="#CBD5E1"/>
+    <line x1="25" y1="165" x2="425" y2="165" stroke="#CBD5E1"/>
+    <line x1="25" y1="200" x2="425" y2="200" stroke="#CBD5E1"/>
+    <text x="35" y="118" font-size="11" font-weight="bold" fill="#64748B">#  JUGADOR        PUNTAJE    FECHA</text>
+    <text x="35" y="152" font-size="11" fill="#475569">1  Camila Santos   1.850 pts  11 Oct</text>
+    <text x="35" y="187" font-size="11" fill="#475569">2  Mateo Gómez     1.620 pts  11 Oct</text>
+    <text x="35" y="222" font-size="11" fill="#475569">3  Laura Uribe     1.410 pts  10 Oct</text>
+
+    <rect x="25" y="330" width="140" height="36" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+    <text x="45" y="353" font-size="11" fill="#475569">Borrar Ranking</text>
+  </g>
+</svg>

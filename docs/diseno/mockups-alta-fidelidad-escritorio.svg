@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="100%" height="100%" style="background: #F4F7FB; font-family: 'Poppins', sans-serif;">
+  <defs>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#003893" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Barra de Navegación Superior Desktop (1440px) -->
+  <rect x="0" y="0" width="1440" height="70" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="70" y="44" font-family="'Montserrat', sans-serif" font-weight="900" font-size="24" fill="#003893">
+    TRIVIA <tspan fill="#CE1126">COLOMBIA</tspan>
+  </text>
+  <rect x="1250" y="16" width="38" height="38" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="1260" y="41" font-size="16">🔊</text>
+  <rect x="1300" y="16" width="38" height="38" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="1310" y="41" font-size="16">🌙</text>
+  <rect x="1350" y="16" width="38" height="38" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="1360" y="41" font-size="16">👁️</text>
+
+  <!-- Tarjeta Central de Juego en Pantalla Desktop (1000px de ancho) -->
+  <g transform="translate(220, 110)" filter="url(#cardShadow)">
+    <rect width="1000" height="720" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1000" height="8" rx="4" fill="#FCD116"/>
+
+    <!-- Header Status -->
+    <text x="50" y="60" font-size="12" font-weight="700" fill="#94A3B8" letter-spacing="1">PREGUNTA</text>
+    <text x="50" y="90" font-family="'Montserrat', sans-serif" font-size="24" font-weight="800" fill="#0F172A">3 / 10</text>
+
+    <!-- Temporizador Circular Central -->
+    <circle cx="500" cy="75" r="34" fill="#FFFFFF" stroke="#003893" stroke-width="5"/>
+    <text x="487" y="84" font-family="'Montserrat', sans-serif" font-size="24" font-weight="800" fill="#0F172A">14</text>
+
+    <!-- Puntaje y Racha -->
+    <text x="850" y="60" font-size="12" font-weight="700" fill="#94A3B8" letter-spacing="1">PUNTAJE</text>
+    <text x="850" y="90" font-family="'Montserrat', sans-serif" font-size="24" font-weight="800" fill="#003893">420 pts</text>
+    <text x="850" y="115" font-size="13" font-weight="700" fill="#EA580C">🔥 Racha: 2</text>
+
+    <!-- Barra de progreso -->
+    <rect x="50" y="135" width="900" height="8" rx="4" fill="#E2E8F0"/>
+    <rect x="50" y="135" width="270" height="8" rx="4" fill="#003893"/>
+
+    <!-- Barra de comodines -->
+    <rect x="50" y="165" width="900" height="50" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="70" y="196" font-size="14" font-weight="600" fill="#475569">Comodines disponibles (costo: -30 pts):</text>
+    <rect x="700" y="172" width="110" height="36" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="720" y="195" font-size="13" font-weight="700" fill="#0F172A">✂️ 50 / 50</text>
+    <rect x="825" y="172" width="110" height="36" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="840" y="195" font-size="13" font-weight="700" fill="#0F172A">⏳ +10 seg</text>
+
+    <!-- Enunciado de la Pregunta -->
+    <rect x="50" y="240" width="115" height="26" rx="13" fill="#E0E7FF"/>
+    <text x="65" y="258" font-size="11" font-weight="700" fill="#3730A3">GEOGRAFÍA</text>
+    <rect x="175" y="240" width="85" height="26" rx="13" fill="#FEF3C7"/>
+    <text x="190" y="258" font-size="11" font-weight="700" fill="#92400E">MEDIO</text>
+
+    <text x="50" y="305" font-family="'Montserrat', sans-serif" font-size="22" font-weight="700" fill="#0F172A">
+      ¿Cuál es el principal río de Colombia, que recorre el país de sur a norte
+    </text>
+    <text x="50" y="335" font-family="'Montserrat', sans-serif" font-size="22" font-weight="700" fill="#0F172A">
+      desembocando en el mar Caribe?
+    </text>
+
+    <!-- Opciones de Respuesta Rejilla 2x2 Desktop -->
+    <!-- Opción A -->
+    <rect x="50" y="375" width="435" height="64" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="85" cy="407" r="16" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="79" y="413" font-size="14" font-weight="800" fill="#64748B">A</text>
+    <text x="120" y="413" font-size="16" font-weight="600" fill="#0F172A">Río Cauca</text>
+
+    <!-- Opción B (Seleccionada correcta con feedback) -->
+    <rect x="515" y="375" width="435" height="64" rx="14" fill="#D1FAE5" stroke="#2E9E5B" stroke-width="2"/>
+    <circle cx="550" cy="407" r="16" fill="#2E9E5B"/>
+    <text x="544" y="413" font-size="14" font-weight="800" fill="#FFFFFF">B</text>
+    <text x="585" y="413" font-size="16" font-weight="700" fill="#065F46">Río Magdalena ✓</text>
+
+    <!-- Opción C -->
+    <rect x="50" y="455" width="435" height="64" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="85" cy="487" r="16" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="79" y="493" font-size="14" font-weight="800" fill="#64748B">C</text>
+    <text x="120" y="493" font-size="16" font-weight="600" fill="#0F172A">Río Atrato</text>
+
+    <!-- Opción D -->
+    <rect x="515" y="455" width="435" height="64" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="550" cy="487" r="16" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="544" y="493" font-size="14" font-weight="800" fill="#64748B">D</text>
+    <text x="585" y="493" font-size="16" font-weight="600" fill="#0F172A">Río Meta</text>
+
+    <!-- Caja de Retroalimentación -->
+    <rect x="50" y="540" width="900" height="135" rx="12" fill="#F0FDF4" stroke="#2E9E5B" stroke-width="2"/>
+    <text x="75" y="575" font-family="'Montserrat', sans-serif" font-size="17" font-weight="800" fill="#065F46">
+      ✅ ¡Respuesta Correcta! (+255 pts)
+    </text>
+    <text x="75" y="605" font-size="14" fill="#0F172A">
+      El río Magdalena es la principal arteria fluvial de Colombia, con una longitud de más de 1.500 km.
+    </text>
+    <rect x="740" y="620" width="190" height="42" rx="10" fill="#003893"/>
+    <text x="765" y="646" font-family="'Montserrat', sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">
+      Siguiente Pregunta ➡️
+    </text>
+  </g>
+</svg>

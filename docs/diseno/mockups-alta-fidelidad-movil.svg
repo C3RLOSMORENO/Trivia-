@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="100%" height="100%" style="background: #F4F7FB; font-family: 'Poppins', sans-serif;">
+  <defs>
+    <filter id="mShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#003893" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Barra Superior Móvil (375px) -->
+  <rect x="0" y="0" width="375" height="60" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="16" y="38" font-family="'Montserrat', sans-serif" font-weight="900" font-size="18" fill="#003893">
+    TRIVIA <tspan fill="#CE1126">COL</tspan>
+  </text>
+  <rect x="250" y="14" width="32" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="257" y="35" font-size="14">🔊</text>
+  <rect x="290" y="14" width="32" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="297" y="35" font-size="14">🌙</text>
+  <rect x="330" y="14" width="32" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="336" y="35" font-size="13">👁️</text>
+
+  <!-- Tarjeta Móvil -->
+  <g transform="translate(16, 75)" filter="url(#mShadow)">
+    <rect width="343" height="710" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="0" y="0" width="343" height="5" rx="3" fill="#FCD116"/>
+
+    <!-- Status Móvil -->
+    <text x="20" y="35" font-size="10" font-weight="700" fill="#94A3B8">PREGUNTA</text>
+    <text x="20" y="55" font-family="'Montserrat', sans-serif" font-size="18" font-weight="800" fill="#0F172A">3 / 10</text>
+
+    <!-- Reloj -->
+    <circle cx="171" cy="42" r="24" fill="#FFFFFF" stroke="#003893" stroke-width="4"/>
+    <text x="162" y="49" font-family="'Montserrat', sans-serif" font-size="17" font-weight="800" fill="#0F172A">14</text>
+
+    <!-- Puntaje -->
+    <text x="260" y="35" font-size="10" font-weight="700" fill="#94A3B8">PUNTOS</text>
+    <text x="245" y="55" font-family="'Montserrat', sans-serif" font-size="18" font-weight="800" fill="#003893">420 pts</text>
+
+    <!-- Barra Progreso -->
+    <rect x="20" y="80" width="303" height="6" rx="3" fill="#E2E8F0"/>
+    <rect x="20" y="80" width="90" height="6" rx="3" fill="#003893"/>
+
+    <!-- Comodines Móvil -->
+    <rect x="20" y="100" width="145" height="40" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="50" y="125" font-size="12" font-weight="700">✂️ 50 / 50</text>
+    <rect x="178" y="100" width="145" height="40" rx="8" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="205" y="125" font-size="12" font-weight="700">⏳ +10 seg</text>
+
+    <!-- Meta badges -->
+    <rect x="20" y="155" width="90" height="22" rx="11" fill="#E0E7FF"/>
+    <text x="32" y="170" font-size="10" font-weight="700" fill="#3730A3">GEOGRAFÍA</text>
+    <rect x="118" y="155" width="70" height="22" rx="11" fill="#FEF3C7"/>
+    <text x="130" y="170" font-size="10" font-weight="700" fill="#92400E">MEDIO</text>
+
+    <!-- Enunciado -->
+    <text x="20" y="205" font-family="'Montserrat', sans-serif" font-size="15" font-weight="700" fill="#0F172A">
+      ¿Cuál es el principal río de
+    </text>
+    <text x="20" y="225" font-family="'Montserrat', sans-serif" font-size="15" font-weight="700" fill="#0F172A">
+      Colombia, que recorre de sur
+    </text>
+    <text x="20" y="245" font-family="'Montserrat', sans-serif" font-size="15" font-weight="700" fill="#0F172A">
+      a norte al país?
+    </text>
+
+    <!-- Opciones (Columna Única Móvil, Altura >= 52px) -->
+    <rect x="20" y="270" width="303" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="45" cy="296" r="14" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="40" y="301" font-size="12" font-weight="800" fill="#64748B">A</text>
+    <text x="70" y="302" font-size="14" font-weight="600">Río Cauca</text>
+
+    <!-- Correcta B -->
+    <rect x="20" y="332" width="303" height="52" rx="10" fill="#D1FAE5" stroke="#2E9E5B" stroke-width="2"/>
+    <circle cx="45" cy="358" r="14" fill="#2E9E5B"/>
+    <text x="40" y="363" font-size="12" font-weight="800" fill="#FFFFFF">B</text>
+    <text x="70" y="364" font-size="14" font-weight="700" fill="#065F46">Río Magdalena ✓</text>
+
+    <rect x="20" y="394" width="303" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="45" cy="420" r="14" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="40" y="425" font-size="12" font-weight="800" fill="#64748B">C</text>
+    <text x="70" y="426" font-size="14" font-weight="600">Río Atrato</text>
+
+    <rect x="20" y="456" width="303" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+    <circle cx="45" cy="482" r="14" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="40" y="487" font-size="12" font-weight="800" fill="#64748B">D</text>
+    <text x="70" y="488" font-size="14" font-weight="600">Río Meta</text>
+
+    <!-- Retroalimentación Móvil -->
+    <rect x="20" y="520" width="303" height="160" rx="10" fill="#F0FDF4" stroke="#2E9E5B" stroke-width="1.5"/>
+    <text x="35" y="546" font-family="'Montserrat', sans-serif" font-size="14" font-weight="800" fill="#065F46">
+      ✅ ¡Correcto! (+255 pts)
+    </text>
+    <text x="35" y="570" font-size="12" fill="#0F172A">
+      El río Magdalena es la principal arteria
+    </text>
+    <text x="35" y="588" font-size="12" fill="#0F172A">
+      fluvial de Colombia con más de 1.500 km.
+    </text>
+
+    <rect x="35" y="620" width="273" height="44" rx="8" fill="#003893"/>
+    <text x="100" y="647" font-family="'Montserrat', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">
+      Siguiente Pregunta ➡️
+    </text>
+  </g>
+</svg>
