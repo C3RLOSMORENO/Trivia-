@@ -74,6 +74,31 @@ const UI = {
     const rachaCont = document.getElementById('racha-contador');
     if (rachaCont) rachaCont.textContent = rachaActual;
 
+    const chipRacha = document.getElementById('chip-racha-actual');
+    if (chipRacha) {
+      if (rachaActual >= 3) {
+        chipRacha.classList.add('racha-ardiente');
+      } else {
+        chipRacha.classList.remove('racha-ardiente');
+      }
+    }
+
+    // Efecto Skeleton Shimmer al transicionar de pregunta
+    const skeleton = document.getElementById('skeleton-juego');
+    const contenedorReactivo = document.getElementById('contenedor-reactivo-activo');
+    if (skeleton && contenedorReactivo) {
+      skeleton.classList.remove('d-none');
+      contenedorReactivo.classList.add('d-none');
+
+      setTimeout(() => {
+        skeleton.classList.add('d-none');
+        contenedorReactivo.classList.remove('d-none');
+        contenedorReactivo.classList.remove('reactivo-activo-fade');
+        void contenedorReactivo.offsetWidth; // Forzar reflow para reanimar
+        contenedorReactivo.classList.add('reactivo-activo-fade');
+      }, 260);
+    }
+
     // Actualizar barra de progreso
     const barraProgreso = document.getElementById('barra-progreso');
     const barraFill = document.getElementById('barra-progreso-fill');
@@ -94,6 +119,28 @@ const UI = {
     const enunciadoElem = document.getElementById('enunciado-pregunta-texto');
     if (enunciadoElem) enunciadoElem.textContent = pregunta.enunciado;
 
+    // Renderizado de imagen ilustrativa del reactivo con atribución legal
+    const contenedorImg = document.getElementById('contenedor-pregunta-imagen');
+    const imgElem = document.getElementById('pregunta-imagen-elem');
+    const fuenteElem = document.getElementById('pregunta-imagen-fuente');
+
+    if (contenedorImg && imgElem) {
+      if (pregunta.imagen) {
+        imgElem.src = pregunta.imagen;
+        imgElem.alt = `Imagen contextual: ${pregunta.enunciado}`;
+        if (fuenteElem) {
+          fuenteElem.textContent = pregunta.fuenteImagen || 'Wikimedia Commons';
+        }
+        contenedorImg.classList.remove('d-none');
+        imgElem.onerror = () => {
+          contenedorImg.classList.add('d-none');
+        };
+      } else {
+        contenedorImg.classList.add('d-none');
+        imgElem.src = '';
+      }
+    }
+
     // Contenedor de opciones
     const contenedorOpciones = document.getElementById('contenedor-opciones');
     if (!contenedorOpciones) return;
@@ -111,8 +158,11 @@ const UI = {
       boton.setAttribute('aria-keyshortcuts', `${indice + 1}`);
 
       boton.innerHTML = `
-        <span class="opcion-letra" aria-hidden="true">${letras[indice]}</span>
-        <span class="opcion-texto">${opcionTexto}</span>
+        <div class="d-flex align-items-center flex-grow-1">
+          <span class="opcion-letra" aria-hidden="true">${letras[indice]}</span>
+          <span class="opcion-texto">${opcionTexto}</span>
+        </div>
+        <kbd class="opcion-atajo-kbd d-none d-sm-inline-block" aria-hidden="true">${indice + 1}</kbd>
       `;
 
       contenedorOpciones.appendChild(boton);
@@ -183,17 +233,26 @@ const UI = {
     if (resultado.esCorrecta) {
       boxRetro.classList.add('visible', 'retroalimentacion-box--acierto');
       retroTitulo.className = 'retro-estado retro-estado--acierto';
-      retroTitulo.innerHTML = '<span>✅</span> ¡Respuesta Correcta!';
+      retroTitulo.innerHTML = '<i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i> ¡Respuesta Correcta!';
       retroPuntos.textContent = `+${resultado.puntosGanados} pts`;
       if (resultado.bonoRacha > 0) {
-        retroPuntos.textContent += ` (¡Bono racha x3! 🔥)`;
+        retroPuntos.textContent += ` (+50 pts Bono de Racha 🔥)`;
+      }
+
+      // Celebración Confetti sutil
+      if (typeof window.confetti === 'function') {
+        window.confetti({
+          particleCount: resultado.bonoRacha > 0 ? 40 : 20,
+          spread: 60,
+          origin: { y: 0.7 }
+        });
       }
     } else {
       boxRetro.classList.add('visible', 'retroalimentacion-box--error');
       retroTitulo.className = 'retro-estado retro-estado--error';
       retroTitulo.innerHTML = resultado.tiempoAgotado 
-        ? '<span>⏰</span> ¡Tiempo Agotado!' 
-        : '<span>❌</span> Respuesta Incorrecta';
+        ? '<i class="bi bi-alarm-fill me-2" aria-hidden="true"></i> ¡Tiempo Límite Agotado!' 
+        : '<i class="bi bi-x-circle-fill me-2" aria-hidden="true"></i> Respuesta Incorrecta';
       retroPuntos.textContent = '+0 pts';
     }
 
@@ -276,19 +335,43 @@ const UI = {
         const card = document.createElement('article');
         card.className = `revision-item ${item.esCorrecta ? 'acierto' : 'error'}`;
 
-        const icono = item.esCorrecta ? '✅' : '❌';
-        card.innerHTML = `
-          <div class="revision-pregunta">
-            ${icono} #${item.numero}: ${item.pregunta}
+        const icono = item.esCorrecta 
+          ? '<i class="bi bi-check-circle-fill text-success me-1" aria-hidden="true"></i>' 
+          : '<i class="bi bi-x-circle-fill text-danger me-1" aria-hidden="true"></i>';
+
+        const thumbHTML = item.imagen ? `
+          <div class="revision-img-thumb me-3 flex-shrink-0 rounded-2 overflow-hidden border d-none d-sm-block">
+            <img src="${item.imagen}" alt="" class="w-100 h-100 object-fit-cover" loading="lazy" onerror="this.parentElement.remove()">
           </div>
-          <div class="revision-detalle">
-            <p><strong>Tu respuesta:</strong> ${item.opcionSeleccionadaTexto}</p>
-            ${!item.esCorrecta ? `<p><strong>Respuesta correcta:</strong> ${item.opcionCorrectaTexto}</p>` : ''}
-            <p style="margin-top: 0.35rem; color: var(--text-primary);"><em>💡 ${item.explicacion}</em></p>
+        ` : '';
+
+        card.innerHTML = `
+          ${thumbHTML}
+          <div class="flex-grow-1">
+            <div class="revision-pregunta">
+              ${icono} Reactivo #${item.numero}: ${item.pregunta}
+            </div>
+            <div class="revision-detalle">
+              <p><strong>Tu respuesta:</strong> ${item.opcionSeleccionadaTexto}</p>
+              ${!item.esCorrecta ? `<p><strong>Respuesta correcta:</strong> ${item.opcionCorrectaTexto}</p>` : ''}
+              <p class="mt-1 text-secondary"><em>Justificación pedagógica: ${item.explicacion}</em></p>
+              ${item.fuenteImagen ? `<p class="mt-1 text-muted small" style="font-size: 0.72rem;"><i class="bi bi-camera me-1"></i>${item.fuenteImagen}</p>` : ''}
+            </div>
           </div>
         `;
         contenedorRevision.appendChild(card);
       });
+    }
+
+    // Celebración con Confetti al finalizar con buen resultado
+    if (typeof window.confetti === 'function' && resumen.porcentajeAciertos >= 60) {
+      setTimeout(() => {
+        window.confetti({
+          particleCount: 90,
+          spread: 80,
+          origin: { y: 0.55 }
+        });
+      }, 300);
     }
 
     this.cambiarPantalla('resultado');
@@ -326,13 +409,13 @@ const UI = {
       const difTexto = DIFICULTADES[partida.dificultad]?.nombre || partida.dificultad;
 
       fila.innerHTML = `
-        <td><span class="posicion-badge ${badgeClase}">${posicionVisual}</span></td>
+        <td class="ps-3"><span class="posicion-badge ${badgeClase}">${posicionVisual}</span></td>
         <td><strong>${this.escaparHTML(partida.nombre)}</strong></td>
-        <td><strong style="color: var(--co-azul);">${partida.puntaje} pts</strong></td>
+        <td><strong class="text-primary">${partida.puntaje} pts</strong></td>
         <td>${partida.aciertos || 0} / ${partida.totalPreguntas || 10}</td>
-        <td class="col-oculta-movil">${catTexto}</td>
-        <td class="col-oculta-movil">${difTexto}</td>
-        <td class="col-oculta-movil" style="font-size: 0.8rem; color: var(--text-muted);">${partida.fecha || '-'}</td>
+        <td class="d-none d-md-table-cell col-oculta-movil">${catTexto}</td>
+        <td class="d-none d-md-table-cell col-oculta-movil">${difTexto}</td>
+        <td class="d-none d-lg-table-cell col-oculta-movil pe-3 text-secondary" style="font-size: 0.8rem;">${partida.fecha || '-'}</td>
       `;
 
       tbody.appendChild(fila);
@@ -389,6 +472,22 @@ const UI = {
     const texto = document.getElementById('texto-record-puntaje');
     if (texto) {
       texto.textContent = `${puntaje} pts`;
+    }
+  },
+
+  /**
+   * Muestra un toast de notificación flotante accesible
+   */
+  mostrarToast(mensaje, icono = 'bi-info-circle-fill') {
+    const toastElem = document.getElementById('toast-notificacion');
+    const textoElem = document.getElementById('toast-notificacion-texto');
+    if (!toastElem || !textoElem) return;
+
+    textoElem.innerHTML = `<i class="bi ${icono} text-primary me-2" aria-hidden="true"></i> ${mensaje}`;
+
+    if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+      const toast = new bootstrap.Toast(toastElem, { delay: 3500 });
+      toast.show();
     }
   },
 
