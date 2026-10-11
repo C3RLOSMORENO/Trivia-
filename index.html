@@ -3,589 +3,912 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Trivia Colombia: Juego interactivo y educativo de preguntas y respuestas sobre geografía, historia, cultura, deportes y naturaleza de Colombia. Desarrollado con HTML5 semántico, CSS3 y JavaScript ES6+.">
-  <meta name="author" content="Estudiante Full Stack - UDES">
+  <meta name="description" content="Trivia Colombia: Plataforma académica interactiva para la evaluación de saberes sobre geografía, historia republicana, patrimonio cultural, deporte y biodiversidad de Colombia.">
+  <meta name="author" content="Universidad de Santander (UDES) - Desarrollo Full Stack">
   <meta name="theme-color" content="#003893">
   
-  <title>Trivia Colombia – Juego de Preguntas y Saberes</title>
+  <title>Trivia Colombia – Evaluación de Saberes y Patrimonio</title>
 
-  <!-- Hojas de Estilo -->
+  <!-- Tipografía Google Fonts: Plus Jakarta Sans & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Hojas de Estilo Personalizadas y Adaptativas -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- Favicon e Iconografía -->
+  <!-- Favicon Vectorial Oficial -->
   <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
 </head>
-<body>
-  <!-- Enlace accesible de salto al contenido -->
+<body class="bg-app text-body-primary">
+
+  <!-- Enlace accesible de salto al contenido principal (WCAG 2.1) -->
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 
-  <!-- Encabezado de la Aplicación -->
-  <header class="app-header" role="banner">
-    <div class="header-container">
-      <div class="brand-wrapper" id="btn-ir-inicio-logo" role="button" tabindex="0" aria-label="Ir a la pantalla de inicio">
-        <img src="assets/img/logo.svg" alt="Trivia Colombia Logo" class="brand-logo-img">
+  <!-- ======================================================== -->
+  <!-- BARRA DE NAVEGACIÓN Y ACCESIBILIDAD                      -->
+  <!-- ======================================================== -->
+  <header class="app-header border-bottom sticky-top" role="banner">
+    <div class="container-xl d-flex align-items-center justify-content-between py-2 px-3">
+      
+      <!-- Marca Institucional -->
+      <div class="d-flex align-items-center gap-2 brand-container" id="btn-ir-inicio-logo" role="button" tabindex="0" aria-label="Ir a la pantalla de inicio">
+        <img src="assets/img/logo.svg" alt="Logotipo Trivia Colombia" class="brand-logo-img">
+        <div class="d-none d-sm-flex flex-column border-start ps-2 ms-1">
+          <span class="brand-tagline">UDES • Saberes Colombia</span>
+          <span class="brand-subtagline">Evaluación de Competencias</span>
+        </div>
       </div>
 
-      <!-- Barra de herramientas de Accesibilidad y Configuración -->
-      <nav class="header-controls" aria-label="Preferencias y Accesibilidad">
-        <button id="btn-toggle-sonido" class="icon-btn" aria-label="Desactivar sonidos" title="Sonido (Activado)" aria-pressed="true">
-          <span aria-hidden="true" id="icono-sonido">🔊</span>
+      <!-- Barra de herramientas de Accesibilidad y Preferencias -->
+      <nav class="header-controls d-flex align-items-center gap-1" aria-label="Preferencias y Accesibilidad">
+        <button id="btn-toggle-atajos" class="btn btn-access" aria-label="Ver atajos de teclado" title="Atajos de teclado (Presiona ?)">
+          <i class="bi bi-keyboard" aria-hidden="true"></i>
+          <span class="visually-hidden">Atajos de teclado</span>
         </button>
-        <button id="btn-toggle-tema" class="icon-btn" aria-label="Activar modo oscuro" title="Cambiar tema oscuro/claro" aria-pressed="false">
-          <span aria-hidden="true" id="icono-tema">🌙</span>
+
+        <button id="btn-toggle-sonido" class="btn btn-access" aria-label="Desactivar sonidos" title="Sonido: Activado" aria-pressed="true">
+          <i class="bi bi-volume-up-fill" id="icono-sonido" aria-hidden="true"></i>
+          <span class="visually-hidden">Sonido</span>
         </button>
-        <button id="btn-toggle-contraste" class="icon-btn" aria-label="Activar alto contraste" title="Modo Alto Contraste" aria-pressed="false">
-          <span aria-hidden="true">👁️</span>
+
+        <button id="btn-toggle-tema" class="btn btn-access" aria-label="Activar modo oscuro" title="Alternar tema oscuro o claro" aria-pressed="false">
+          <i class="bi bi-moon-stars-fill" id="icono-tema" aria-hidden="true"></i>
+          <span class="visually-hidden">Tema visual</span>
         </button>
-        <button id="btn-toggle-fuente" class="icon-btn" aria-label="Aumentar tamaño de texto" title="Texto grande" aria-pressed="false">
-          <span aria-hidden="true" style="font-weight: 800; font-size: 0.95rem;">A+</span>
+
+        <button id="btn-toggle-contraste" class="btn btn-access" aria-label="Activar modo de alto contraste" title="Modo Alto Contraste (WCAG AAA)" aria-pressed="false">
+          <i class="bi bi-circle-half" aria-hidden="true"></i>
+          <span class="visually-hidden">Alto contraste</span>
+        </button>
+
+        <button id="btn-toggle-fuente" class="btn btn-access" aria-label="Aumentar escala tipográfica" title="Escala tipográfica A+" aria-pressed="false">
+          <span class="access-font-text" aria-hidden="true">A+</span>
+          <span class="visually-hidden">Tamaño de texto</span>
         </button>
       </nav>
+
     </div>
   </header>
 
-  <!-- Región para Lectores de Pantalla (Anuncios dinámicos accesibles) -->
-  <div id="aria-anunciador" style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;" aria-live="polite" aria-atomic="true"></div>
+  <!-- Región para Lectores de Pantalla (Anuncios dinámicos accesibles ARIA Live) -->
+  <div id="aria-anunciador" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Contenedor Principal de Pantallas -->
-  <main id="main-content" class="app-main" role="main">
+  <!-- ======================================================== -->
+  <!-- CONTENEDOR PRINCIPAL DE PANTALLAS                        -->
+  <!-- ======================================================== -->
+  <main id="main-content" class="app-main container py-3 py-md-4 my-auto" role="main">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-9">
 
-    <!-- ======================================================== -->
-    <!-- 1. PANTALLA INICIO                                       -->
-    <!-- ======================================================== -->
-    <section id="pantalla-inicio" class="pantalla pantalla--activa" role="region" aria-labelledby="titulo-inicio">
-      <div class="card hero-inicio">
-        <div class="hero-bandera-barra" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
+        <!-- ======================================================== -->
+        <!-- 1. PANTALLA INICIO                                       -->
+        <!-- ======================================================== -->
+        <section id="pantalla-inicio" class="pantalla pantalla--activa" role="region" aria-labelledby="titulo-inicio">
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <!-- Cinta tricolor institucional -->
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
 
-        <div class="hero-logo-container">
-          <img src="assets/img/logo.svg" alt="Trivia Colombia: Juego de preguntas" class="hero-logo-img">
-        </div>
+            <div class="card-body p-4 p-md-5 text-center">
+              
+              <!-- Banner Ilustrado de Colombia -->
+              <div class="hero-image-wrapper rounded-4 overflow-hidden mb-4 shadow-sm border position-relative mx-auto">
+                <img src="assets/img/hero-colombia.jpg" alt="Ilustración panorámica del paisaje, biodiversidad y arquitectura de Colombia" class="hero-cover-img w-100">
+                <div class="hero-image-overlay d-flex align-items-end justify-content-between p-3 p-md-4 position-absolute bottom-0 start-0 w-100">
+                  <span class="badge text-bg-dark bg-opacity-75 border text-white px-3 py-2 shadow-sm">
+                    <i class="bi bi-compass-fill text-warning me-1"></i> Saberes • Biodiversidad • Historia
+                  </span>
+                  <span class="badge bg-primary bg-opacity-90 text-white px-2 py-1 small d-none d-sm-inline-block">
+                    5 Áreas Temáticas
+                  </span>
+                </div>
+              </div>
 
-        <h1 id="titulo-inicio" class="sr-only" style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Trivia Colombia - Juego de Preguntas</h1>
+              <h1 id="titulo-inicio" class="hero-title fw-bold text-balance mb-2">
+                Evaluación Interactiva de Saberes Nacionales
+              </h1>
 
-        <p class="hero-descripcion">
-          Pon a prueba tus conocimientos sobre la geografía, historia, tradiciones, deportes y la majestuosa biodiversidad colombiana.
-        </p>
+              <p class="hero-description text-secondary mx-auto mb-4">
+                Plataforma académica interactiva para la autoevaluación y valoración de competencias sobre la geografía, procesos históricos, patrimonio cultural, deporte y biodiversidad de Colombia.
+              </p>
 
-        <!-- Formulario con Campo de Nombre (Obligatorio) -->
-        <form id="form-inicio-jugador" class="form-jugador" novalidate onsubmit="return false;">
-          <label for="input-nombre-jugador" class="form-label">
-            Escribe tu nombre para iniciar: <span style="color: var(--co-rojo);" aria-hidden="true">*</span>
-          </label>
-          <div class="input-jugador-wrapper">
-            <input 
-              type="text" 
-              id="input-nombre-jugador" 
-              class="input-text" 
-              placeholder="Ej. Camila Santos" 
-              maxlength="25"
-              autocomplete="name"
-              required 
-              aria-required="true"
-              aria-describedby="error-nombre-jugador"
-            >
-          </div>
-          <p id="error-nombre-jugador" class="input-error-msg" role="alert">
-            Por favor ingresa tu nombre para poder comenzar la partida.
-          </p>
-        </form>
+              <!-- Formulario de Registro de Jugador -->
+              <form id="form-inicio-jugador" class="form-jugador-box mx-auto mb-4 text-start" novalidate onsubmit="return false;">
+                <label for="input-nombre-jugador" class="form-label fw-semibold text-body-secondary small mb-1">
+                  Nombre del participante o estudiante: <span class="text-danger" aria-hidden="true">*</span>
+                </label>
+                <div class="input-group input-group-lg shadow-2xs">
+                  <span class="input-group-text bg-body border-end-0 text-muted">
+                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="input-nombre-jugador" 
+                    class="form-control border-start-0 ps-1" 
+                    placeholder="Ej. Camila Santos" 
+                    maxlength="25"
+                    autocomplete="name"
+                    required 
+                    aria-required="true"
+                    aria-describedby="error-nombre-jugador"
+                  >
+                </div>
+                <div id="error-nombre-jugador" class="form-text text-danger mt-1 small d-none" role="alert">
+                  <i class="bi bi-exclamation-triangle-fill me-1"></i> Por favor ingresa tu nombre para habilitar la sesión de evaluación.
+                </div>
+              </form>
 
-        <!-- Botones de Acción -->
-        <div class="acciones-inicio">
-          <button id="btn-iniciar-flujo" class="btn btn-primary btn-lg btn-block" type="button">
-            <span>🚀</span> ¡Jugar Ahora!
-          </button>
-          
-          <div class="acciones-secundarias-inicio">
-            <button id="btn-ver-instrucciones" class="btn btn-secondary" type="button">
-              <span>📖</span> Instrucciones
-            </button>
-            <button id="btn-ver-ranking-inicio" class="btn btn-secondary" type="button">
-              <span>🏆</span> Ranking & Stats
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+              <!-- Botones de Acción de Inicio -->
+              <div class="d-flex flex-column gap-2 col-md-9 col-lg-8 mx-auto mb-4">
+                <button id="btn-iniciar-flujo" class="btn btn-primary btn-lg shadow-sm py-3 fw-bold btn-interactive-ripple" type="button">
+                  <i class="bi bi-play-circle-fill me-2" aria-hidden="true"></i> Iniciar Evaluación
+                </button>
 
-    <!-- ======================================================== -->
-    <!-- 2. PANTALLA INSTRUCCIONES                                -->
-    <!-- ======================================================== -->
-    <section id="pantalla-instrucciones" class="pantalla" role="region" aria-labelledby="titulo-instrucciones">
-      <div class="card card--accent-top">
-        <h1 id="titulo-instrucciones" class="titulo-seccion">
-          <span>📖</span> Reglas del Juego y Sistema de Puntos
-        </h1>
-        <p class="subtitulo-seccion">
-          Conoce cómo funciona la dinámica, el temporizador, los comodines y la puntuación de Trivia Colombia.
-        </p>
+                <div class="row g-2 pt-1">
+                  <div class="col-6">
+                    <button id="btn-ver-instrucciones" class="btn btn-outline-secondary w-100 py-2 fw-medium" type="button">
+                      <i class="bi bi-journal-text me-1" aria-hidden="true"></i> Reglamento
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button id="btn-ver-ranking-inicio" class="btn btn-outline-secondary w-100 py-2 fw-medium" type="button">
+                      <i class="bi bi-trophy me-1" aria-hidden="true"></i> Clasificación
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-        <div class="instrucciones-grid">
-          <article class="instruccion-card">
-            <div class="instruccion-icono" aria-hidden="true">⏱️</div>
-            <h2 class="instruccion-titulo">Rondas y Tiempo</h2>
-            <p>Cada partida consta de <strong>10 preguntas de selección múltiple</strong> con 4 opciones. Tienes <strong>20 segundos</strong> por cada pregunta. Si el tiempo expira, contará como incorrecta.</p>
-          </article>
+              <!-- Metadata técnica de cumplimiento -->
+              <div class="border-top pt-3 d-flex flex-wrap align-items-center justify-content-center gap-3 text-muted small">
+                <span><i class="bi bi-check-circle-fill text-success me-1"></i> 55 Reactivos Validados</span>
+                <span class="d-none d-sm-inline">•</span>
+                <span><i class="bi bi-shield-check text-primary me-1"></i> Normativa WCAG 2.1 AA/AAA</span>
+                <span class="d-none d-sm-inline">•</span>
+                <span><i class="bi bi-device-ssd text-secondary me-1"></i> Persistencia LocalStorage</span>
+              </div>
 
-          <article class="instruccion-card">
-            <div class="instruccion-icono" aria-hidden="true">💡</div>
-            <h2 class="instruccion-titulo">Comodines Disponibles</h2>
-            <p>Dispones de 2 comodines por partida (cada uno se puede usar una sola vez y descuenta <strong>-30 puntos</strong>):</p>
-            <ul style="padding-left: 1.25rem; font-size: 0.95rem; margin-top: 0.35rem;">
-              <li><strong>50/50:</strong> Descarta 2 opciones incorrectas.</li>
-              <li><strong>+10s:</strong> Suma 10 segundos extra al reloj.</li>
-            </ul>
-          </article>
-
-          <article class="instruccion-card">
-            <div class="instruccion-icono" aria-hidden="true">🔥</div>
-            <h2 class="instruccion-titulo">Rachas y Bonificaciones</h2>
-            <p>¡La velocidad y precisión importan! Cada acierto otorga bonificación por rapidez, y si logras rachas consecutivas sumarás puntos adicionales.</p>
-          </article>
-        </div>
-
-        <!-- Tabla reglamentaria de puntuación (Sección 6.1) -->
-        <h2 class="titulo-seccion" style="font-size: 1.35rem; margin-top: 1.5rem;">
-          <span>📊</span> Tabla Oficial de Puntuación
-        </h2>
-        
-        <div class="tabla-container">
-          <table class="tabla-puntuacion" aria-label="Tabla de cálculo de puntos">
-            <thead>
-              <tr>
-                <th scope="col">Concepto</th>
-                <th scope="col">Efecto en Puntos</th>
-                <th scope="col">Detalle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Respuesta Correcta</strong></td>
-                <td><span class="badge-pts badge-pts--verde">+100 pts</span></td>
-                <td>Puntaje base asegurado por acierto</td>
-              </tr>
-              <tr>
-                <td><strong>Bonificación por Rapidez</strong></td>
-                <td><span class="badge-pts badge-pts--azul">+5 pts / seg</span></td>
-                <td>Por cada segundo sobrante en el reloj (hasta +100)</td>
-              </tr>
-              <tr>
-                <td><strong>Racha de 3 Aciertos Seguidos</strong></td>
-                <td><span class="badge-pts badge-pts--verde">+50 pts extra</span></td>
-                <td>Bonificación de racha consecutiva</td>
-              </tr>
-              <tr>
-                <td><strong>Respuesta Incorrecta o Tiempo Agotado</strong></td>
-                <td><span class="badge-pts badge-pts--rojo">0 pts</span></td>
-                <td>Se rompe la racha actual</td>
-              </tr>
-              <tr>
-                <td><strong>Uso de Comodín</strong></td>
-                <td><span class="badge-pts badge-pts--rojo">-30 pts</span></td>
-                <td>Costo por utilizar 50/50 o Tiempo Extra</td>
-              </tr>
-              <tr>
-                <td><strong>Multiplicador de Dificultad</strong></td>
-                <td><span class="badge-pts badge-pts--azul">x1.0 | x1.5 | x2.0</span></td>
-                <td>Fácil (x1.0), Medio (x1.5), Difícil (x2.0)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
-          <button id="btn-volver-instrucciones" class="btn btn-primary" type="button">
-            <span>⬅️</span> Volver al Menú
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- 3. PANTALLA CONFIGURACIÓN DE PARTIDA                     -->
-    <!-- ======================================================== -->
-    <section id="pantalla-configuracion" class="pantalla" role="region" aria-labelledby="titulo-configuracion">
-      <div class="card card--accent-top">
-        <h1 id="titulo-configuracion" class="titulo-seccion">
-          <span>⚙️</span> Configura tu Partida
-        </h1>
-        <p class="subtitulo-seccion">
-          Hola, <strong id="saludo-jugador-config">Jugador</strong>. Elige la categoría temática y el nivel de dificultad.
-        </p>
-
-        <!-- Selección de Categoría -->
-        <div class="config-seccion">
-          <div class="config-seccion-titulo">
-            <span>1. Selecciona la Categoría:</span>
-          </div>
-
-          <div class="categorias-grid" role="radiogroup" aria-label="Categorías de Trivia">
-            <button class="categoria-card seleccionada" data-categoria="todas" role="radio" aria-checked="true" type="button">
-              <img src="assets/img/categoria-todas.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Todas las Categorías</span>
-            </button>
-
-            <button class="categoria-card" data-categoria="geografia" role="radio" aria-checked="false" type="button">
-              <img src="assets/img/categoria-geografia.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Geografía</span>
-            </button>
-
-            <button class="categoria-card" data-categoria="historia" role="radio" aria-checked="false" type="button">
-              <img src="assets/img/categoria-historia.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Historia</span>
-            </button>
-
-            <button class="categoria-card" data-categoria="cultura" role="radio" aria-checked="false" type="button">
-              <img src="assets/img/categoria-cultura.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Cultura y Tradiciones</span>
-            </button>
-
-            <button class="categoria-card" data-categoria="deportes" role="radio" aria-checked="false" type="button">
-              <img src="assets/img/categoria-deportes.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Deportes</span>
-            </button>
-
-            <button class="categoria-card" data-categoria="naturaleza" role="radio" aria-checked="false" type="button">
-              <img src="assets/img/categoria-naturaleza.svg" alt="" class="categoria-icono-svg" aria-hidden="true">
-              <span class="categoria-nombre">Ciencia y Naturaleza</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Selección de Dificultad -->
-        <div class="config-seccion">
-          <div class="config-seccion-titulo">
-            <span>2. Nivel de Dificultad:</span>
-          </div>
-
-          <div class="dificultades-selector" role="radiogroup" aria-label="Nivel de dificultad">
-            <button class="dificultad-btn" data-dificultad="facil" role="radio" aria-checked="false" type="button">
-              <span class="dificultad-nombre" style="color: var(--co-verde);">Fácil</span>
-              <span class="dificultad-multiplicador">Multiplicador x1.0</span>
-            </button>
-
-            <button class="dificultad-btn seleccionada" data-dificultad="medio" role="radio" aria-checked="true" type="button">
-              <span class="dificultad-nombre" style="color: #B45309;">Medio</span>
-              <span class="dificultad-multiplicador">Multiplicador x1.5</span>
-            </button>
-
-            <button class="dificultad-btn" data-dificultad="dificil" role="radio" aria-checked="false" type="button">
-              <span class="dificultad-nombre" style="color: var(--co-rojo);">Difícil</span>
-              <span class="dificultad-multiplicador">Multiplicador x2.0</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Indicador de récord personal para esta combinación -->
-        <div class="record-preview" id="contenedor-record-preview">
-          <div>
-            <strong>Récord Histórico en esta categoría:</strong>
-            <span id="texto-record-puntaje" style="margin-left: 0.5rem; font-weight: 800; color: var(--co-azul);">0 pts</span>
-          </div>
-          <span style="font-size: 1.25rem;" aria-hidden="true">🎖️</span>
-        </div>
-
-        <!-- Botones de Acción -->
-        <div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
-          <button id="btn-cancelar-config" class="btn btn-secondary" type="button">
-            <span>⬅️</span> Volver
-          </button>
-          <button id="btn-comenzar-partida" class="btn btn-primary btn-lg" type="button">
-            <span>🎮</span> ¡Comenzar Partida!
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- 4. PANTALLA JUEGO ACTIVO                                 -->
-    <!-- ======================================================== -->
-    <section id="pantalla-juego" class="pantalla" role="region" aria-labelledby="enunciado-pregunta-texto">
-      <div class="card">
-        
-        <!-- Estado Superior de la Partida -->
-        <header class="juego-header-status">
-          <!-- Pregunta Actual -->
-          <div class="status-bloque">
-            <span class="status-label">Pregunta</span>
-            <span class="status-valor" id="indicador-numero-pregunta">1 / 10</span>
-          </div>
-
-          <!-- Temporizador Circular -->
-          <div class="temporizador-contenedor">
-            <div id="reloj-cuenta-regresiva" class="temporizador-reloj" aria-label="Segundos restantes: 20">
-              <span id="tiempo-restante-numero">20</span>
             </div>
-          </div>
-
-          <!-- Puntaje Actual y Racha -->
-          <div class="status-bloque status-bloque--derecha">
-            <span class="status-label">Puntaje</span>
-            <span class="status-valor" id="indicador-puntaje-actual">0 pts</span>
-            <div class="racha-chip" id="chip-racha-actual" title="Racha de aciertos seguidos">
-              <span aria-hidden="true">🔥</span> Racha: <strong id="racha-contador">0</strong>
-            </div>
-          </div>
-        </header>
-
-        <!-- Barra de Progreso de la Ronda -->
-        <div class="barra-progreso-ronda" role="progressbar" id="barra-progreso" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de la partida">
-          <div class="barra-progreso-fill" id="barra-progreso-fill"></div>
-        </div>
-
-        <!-- Barra de Comodines -->
-        <section class="comodines-barra" aria-label="Comodines disponibles">
-          <div class="comodines-info">
-            <span>Comodines (costo: -30 pts):</span>
-          </div>
-          <div class="comodines-botones">
-            <button id="btn-comodin-5050" class="btn-comodin" type="button" title="Elimina dos opciones incorrectas (Atajo: tecla C)" aria-keyshortcuts="C">
-              <span>✂️</span> 50 / 50
-            </button>
-            <button id="btn-comodin-tiempo" class="btn-comodin" type="button" title="Suma 10 segundos adicionales (Atajo: tecla T)" aria-keyshortcuts="T">
-              <span>⏳</span> +10 seg
-            </button>
           </div>
         </section>
 
-        <!-- Tarjeta de Pregunta -->
-        <article class="pregunta-card">
-          <div class="pregunta-meta">
-            <span class="meta-badge meta-badge--cat" id="badge-pregunta-categoria">Geografía</span>
-            <span class="meta-badge meta-badge--dif" id="badge-pregunta-dificultad">Medio</span>
-          </div>
-          <h2 id="enunciado-pregunta-texto" class="pregunta-enunciado">
-            Cargando pregunta...
-          </h2>
-        </article>
+        <!-- ======================================================== -->
+        <!-- 2. PANTALLA INSTRUCCIONES                                -->
+        <!-- ======================================================== -->
+        <section id="pantalla-instrucciones" class="pantalla" role="region" aria-labelledby="titulo-instrucciones" hidden>
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
 
-        <!-- Opciones de Respuesta -->
-        <div class="opciones-grid" id="contenedor-opciones" role="group" aria-label="Opciones de respuesta">
-          <!-- Renderizado dinámico de los 4 botones de opción -->
-        </div>
+            <div class="card-body p-4 p-md-5">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="badge-icon bg-primary-subtle text-primary rounded-3 p-2">
+                  <i class="bi bi-journal-bookmark-fill fs-4" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h1 id="titulo-instrucciones" class="h3 fw-bold mb-0">
+                    Reglamento Oficial y Criterios de Evaluación
+                  </h1>
+                  <p class="text-secondary small mb-0">
+                    Directrices de evaluación, administración del tiempo, comodines y baremo de calificación.
+                  </p>
+                </div>
+              </div>
 
-        <!-- Panel de Retroalimentación Inmediata -->
-        <div id="box-retroalimentacion" class="retroalimentacion-box" role="alert" aria-live="assertive">
-          <div class="retro-header">
-            <span id="retro-titulo-estado" class="retro-estado">
-              <!-- Estado acierto o error -->
-            </span>
-            <span id="retro-puntos-ganados" class="retro-puntos">
-              <!-- +160 pts -->
-            </span>
+              <hr class="my-4">
+
+              <!-- Grid de Reglas de Juego -->
+              <div class="row g-3 g-md-4 mb-4">
+                <div class="col-md-4">
+                  <div class="card h-100 border rounded-3 p-3 bg-body-tertiary">
+                    <div class="d-flex align-items-center gap-2 mb-2 text-primary fw-bold">
+                      <i class="bi bi-stopwatch-fill fs-5" aria-hidden="true"></i>
+                      <span>Rondas y Tiempo</span>
+                    </div>
+                    <p class="small text-secondary mb-0">
+                      Cada partida consta de <strong>10 reactivos</strong> seleccionados aleatoriamente con 4 opciones. Dispones de <strong>20 segundos</strong> por reactivo. Si el temporizador expira, el reactivo se registra como incorrecto.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card h-100 border rounded-3 p-3 bg-body-tertiary">
+                    <div class="d-flex align-items-center gap-2 mb-2 text-primary fw-bold">
+                      <i class="bi bi-magic fs-5" aria-hidden="true"></i>
+                      <span>Comodines de Asistencia</span>
+                    </div>
+                    <p class="small text-secondary mb-0">
+                      Dispones de 2 comodines por partida (un solo uso cada uno con deducción técnica de <strong>-30 pts</strong>):
+                    </p>
+                    <ul class="small text-secondary ps-3 mt-2 mb-0">
+                      <li><strong>50/50 [Tecla C]:</strong> Descarta 2 distractores erróneos.</li>
+                      <li><strong>+10s [Tecla T]:</strong> Suma 10 segundos adicionales al reloj.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card h-100 border rounded-3 p-3 bg-body-tertiary">
+                    <div class="d-flex align-items-center gap-2 mb-2 text-primary fw-bold">
+                      <i class="bi bi-lightning-charge-fill fs-5" aria-hidden="true"></i>
+                      <span>Bonificación y Rachas</span>
+                    </div>
+                    <p class="small text-secondary mb-0">
+                      La precisión y la agilidad premian el puntaje. Por cada segundo restante sumas <strong>+5 pts</strong>. Al encadenar una racha de <strong>3 aciertos seguidos</strong> recibes una bonificación extraordinaria de <strong>+50 pts</strong>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabla Reglamentaria de Puntuación -->
+              <h2 class="h5 fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-table text-primary" aria-hidden="true"></i> Baremo Oficial de Calificación
+              </h2>
+
+              <div class="table-responsive rounded-3 border mb-4">
+                <table class="table table-hover align-middle mb-0" aria-label="Tabla de cálculo de puntos">
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col" class="py-3 ps-3">Criterio de Evaluación</th>
+                      <th scope="col" class="py-3">Impacto en Puntuación</th>
+                      <th scope="col" class="py-3 pe-3">Condición de Aplicación</th>
+                    </tr>
+                  </thead>
+                  <tbody class="small">
+                    <tr>
+                      <td class="ps-3 fw-medium">Respuesta Correcta</td>
+                      <td><span class="badge text-bg-success">+100 pts</span></td>
+                      <td class="pe-3 text-secondary">Puntaje base garantizado por acierto</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-3 fw-medium">Bonificación por Rapidez</td>
+                      <td><span class="badge text-bg-primary">+5 pts / segundo</span></td>
+                      <td class="pe-3 text-secondary">Calculado sobre el tiempo restante en el reloj</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-3 fw-medium">Racha de 3 Aciertos Consecutivos</td>
+                      <td><span class="badge text-bg-warning">+50 pts bono</span></td>
+                      <td class="pe-3 text-secondary">Bonificación extraordinaria acumulativa</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-3 fw-medium">Respuesta Incorrecta o Tiempo Expirado</td>
+                      <td><span class="badge text-bg-secondary">0 pts</span></td>
+                      <td class="pe-3 text-secondary">Interrumpe el contador de racha activa</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-3 fw-medium">Uso de Comodín (50/50 o Tiempo Extra)</td>
+                      <td><span class="badge text-bg-danger">-30 pts</span></td>
+                      <td class="pe-3 text-secondary">Deducción sobre la bonificación de la partida</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-3 fw-medium">Multiplicador por Nivel de Complejidad</td>
+                      <td><span class="badge text-bg-info">x1.0 | x1.5 | x2.0</span></td>
+                      <td class="pe-3 text-secondary">Fácil (x1.0), Medio (x1.5), Difícil (x2.0)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button id="btn-volver-instrucciones" class="btn btn-primary px-4 py-2" type="button">
+                  <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Menú Principal
+                </button>
+              </div>
+
+            </div>
           </div>
-          <p id="retro-explicacion-texto" class="retro-explicacion">
-            <!-- Explicación pedagógica -->
-          </p>
-          <div style="display: flex; justify-content: flex-end;">
-            <button id="btn-siguiente-pregunta" class="btn btn-primary" type="button">
-              <span>Siguiente Pregunta</span> ➡️
-            </button>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 3. PANTALLA CONFIGURACIÓN DE PARTIDA                     -->
+        <!-- ======================================================== -->
+        <section id="pantalla-configuracion" class="pantalla" role="region" aria-labelledby="titulo-configuracion" hidden>
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
+
+            <div class="card-body p-4 p-md-5">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="badge-icon bg-primary-subtle text-primary rounded-3 p-2">
+                  <i class="bi bi-sliders2-vertical fs-4" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h1 id="titulo-configuracion" class="h3 fw-bold mb-0">
+                    Configuración de la Sesión
+                  </h1>
+                  <p class="text-secondary small mb-0">
+                    Participante: <strong id="saludo-jugador-config" class="text-primary">Participante</strong>. Define el área temática y el nivel de dificultad.
+                  </p>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <!-- Sección 1: Selección de Categoría -->
+              <div class="mb-4">
+                <label class="form-label fw-bold text-body-secondary small text-uppercase tracking-wider mb-2">
+                  1. Área de Conocimiento
+                </label>
+
+                <div class="row g-2 g-md-3" role="radiogroup" aria-label="Categorías temáticas de evaluación">
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card seleccionada w-100" data-categoria="todas" role="radio" aria-checked="true" type="button">
+                      <img src="assets/img/categoria-todas.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Todas las Áreas</span>
+                    </button>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card w-100" data-categoria="geografia" role="radio" aria-checked="false" type="button">
+                      <img src="assets/img/categoria-geografia.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Geografía</span>
+                    </button>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card w-100" data-categoria="historia" role="radio" aria-checked="false" type="button">
+                      <img src="assets/img/categoria-historia.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Historia</span>
+                    </button>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card w-100" data-categoria="cultura" role="radio" aria-checked="false" type="button">
+                      <img src="assets/img/categoria-cultura.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Cultura y Tradición</span>
+                    </button>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card w-100" data-categoria="deportes" role="radio" aria-checked="false" type="button">
+                      <img src="assets/img/categoria-deportes.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Deportes</span>
+                    </button>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <button class="categoria-card w-100" data-categoria="naturaleza" role="radio" aria-checked="false" type="button">
+                      <img src="assets/img/categoria-naturaleza.svg" alt="" class="categoria-icono-svg mb-2" aria-hidden="true">
+                      <span class="categoria-nombre">Ciencia y Naturaleza</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección 2: Selección de Dificultad -->
+              <div class="mb-4">
+                <label class="form-label fw-bold text-body-secondary small text-uppercase tracking-wider mb-2">
+                  2. Nivel de Complejidad
+                </label>
+
+                <div class="row g-2 g-md-3" role="radiogroup" aria-label="Nivel de dificultad de los reactivos">
+                  <div class="col-12 col-md-4">
+                    <button class="dificultad-btn w-100" data-dificultad="facil" role="radio" aria-checked="false" type="button">
+                      <span class="dificultad-nombre text-success fw-bold">Básico / Fácil</span>
+                      <span class="dificultad-multiplicador text-muted small">Multiplicador x1.0</span>
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button class="dificultad-btn seleccionada w-100" data-dificultad="medio" role="radio" aria-checked="true" type="button">
+                      <span class="dificultad-nombre text-warning-emphasis fw-bold">Intermedio / Medio</span>
+                      <span class="dificultad-multiplicador text-muted small">Multiplicador x1.5</span>
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button class="dificultad-btn w-100" data-dificultad="dificil" role="radio" aria-checked="false" type="button">
+                      <span class="dificultad-nombre text-danger fw-bold">Avanzado / Difícil</span>
+                      <span class="dificultad-multiplicador text-muted small">Multiplicador x2.0</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Indicador de récord personal para la configuración actual -->
+              <div class="alert alert-secondary d-flex align-items-center justify-content-between p-3 rounded-3 mb-4" id="contenedor-record-preview">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-award-fill text-warning fs-4" aria-hidden="true"></i>
+                  <div>
+                    <span class="small text-secondary d-block">Mejor marca en esta categoría:</span>
+                    <strong id="texto-record-puntaje" class="text-primary fs-5">0 pts</strong>
+                  </div>
+                </div>
+                <span class="badge text-bg-light border text-muted small">Histórico Local</span>
+              </div>
+
+              <!-- Acciones de Navegación -->
+              <div class="d-flex justify-content-between align-items-center pt-2">
+                <button id="btn-cancelar-config" class="btn btn-outline-secondary px-4 py-2" type="button">
+                  <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver
+                </button>
+                <button id="btn-comenzar-partida" class="btn btn-primary btn-lg px-4 py-2 fw-bold shadow-sm" type="button">
+                  <i class="bi bi-play-circle-fill me-2" aria-hidden="true"></i> Comenzar Evaluación
+                </button>
+              </div>
+
+            </div>
           </div>
-        </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 4. PANTALLA JUEGO ACTIVO                                 -->
+        <!-- ======================================================== -->
+        <section id="pantalla-juego" class="pantalla" role="region" aria-labelledby="enunciado-pregunta-texto" hidden>
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
+
+            <div class="card-body p-4 p-md-5">
+
+              <!-- Dashboard de Estado de la Partida -->
+              <div class="juego-header-status row align-items-center g-3 mb-3">
+                
+                <!-- Reactivo Actual -->
+                <div class="col-4 text-start">
+                  <span class="status-label d-block text-muted small fw-medium">Reactivo</span>
+                  <span class="status-valor fw-bold fs-5 text-primary" id="indicador-numero-pregunta">1 / 10</span>
+                </div>
+
+                <!-- Temporizador Central -->
+                <div class="col-4 text-center">
+                  <div class="temporizador-contenedor d-inline-block">
+                    <div id="reloj-cuenta-regresiva" class="temporizador-reloj" aria-label="Segundos restantes: 20">
+                      <span id="tiempo-restante-numero">20</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Puntaje y Racha -->
+                <div class="col-4 text-end">
+                  <span class="status-label d-block text-muted small fw-medium">Puntaje</span>
+                  <span class="status-valor fw-bold fs-5 text-primary" id="indicador-puntaje-actual">0 pts</span>
+                  <div class="racha-chip mt-1" id="chip-racha-actual" title="Aciertos consecutivos">
+                    <i class="bi bi-fire text-warning" aria-hidden="true"></i> Racha: <strong id="racha-contador">0</strong>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Barra de Progreso de la Ronda -->
+              <div class="progress mb-4" role="progressbar" id="barra-progreso" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de la sesión" style="height: 6px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" id="barra-progreso-fill" style="width: 10%;"></div>
+              </div>
+
+              <!-- Barra de Comodines Técnicos -->
+              <div class="comodines-barra d-flex flex-wrap align-items-center justify-content-between p-2 px-3 rounded-3 bg-body-tertiary border mb-4" aria-label="Comodines disponibles">
+                <span class="small text-secondary fw-medium">
+                  <i class="bi bi-wrench me-1 text-primary" aria-hidden="true"></i> Comodines (-30 pts):
+                </span>
+                <div class="comodines-botones d-flex gap-2">
+                  <button id="btn-comodin-5050" class="btn btn-sm btn-comodin" type="button" title="Descarta 2 opciones incorrectas (Atajo: C)" aria-keyshortcuts="C">
+                    <i class="bi bi-scissors me-1" aria-hidden="true"></i> 50 / 50 <kbd class="ms-1">C</kbd>
+                  </button>
+                  <button id="btn-comodin-tiempo" class="btn btn-sm btn-comodin" type="button" title="Suma 10 segundos al reloj (Atajo: T)" aria-keyshortcuts="T">
+                    <i class="bi bi-alarm me-1" aria-hidden="true"></i> +10 seg <kbd class="ms-1">T</kbd>
+                  </button>
+                </div>
+              </div>
+
+              <!-- =============================================== -->
+              <!-- SKELETON SHIMMER LOADER (Transiciones fluidas)   -->
+              <!-- =============================================== -->
+              <div id="skeleton-juego" class="skeleton-container d-none" aria-hidden="true">
+                <div class="d-flex gap-2 mb-3">
+                  <div class="skeleton-box" style="width: 100px; height: 26px; border-radius: 999px;"></div>
+                  <div class="skeleton-box" style="width: 75px; height: 26px; border-radius: 999px;"></div>
+                </div>
+                <div class="p-4 rounded-3 border bg-body mb-4">
+                  <div class="skeleton-box mb-3 rounded-3" style="width: 100%; height: 160px;"></div>
+                  <div class="skeleton-box mb-2" style="width: 90%; height: 24px;"></div>
+                  <div class="skeleton-box" style="width: 60%; height: 24px;"></div>
+                </div>
+                <div class="opciones-grid mb-4">
+                  <div class="skeleton-box" style="height: 60px; border-radius: 12px;"></div>
+                  <div class="skeleton-box" style="height: 60px; border-radius: 12px;"></div>
+                  <div class="skeleton-box" style="height: 60px; border-radius: 12px;"></div>
+                  <div class="skeleton-box" style="height: 60px; border-radius: 12px;"></div>
+                </div>
+              </div>
+
+              <!-- Contenido Real del Reactivo -->
+              <div id="contenedor-reactivo-activo" class="reactivo-activo-fade">
+                <!-- Tarjeta de Reactivo -->
+                <article class="pregunta-card p-3 p-md-4 rounded-3 border bg-body mb-4">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge text-bg-primary-subtle text-primary border" id="badge-pregunta-categoria">Geografía</span>
+                    <span class="badge text-bg-secondary-subtle text-secondary border" id="badge-pregunta-dificultad">Medio</span>
+                  </div>
+
+                  <!-- Imagen Ilustrativa del Reactivo con Atribución Legal -->
+                  <div class="pregunta-imagen-wrapper mb-3 rounded-3 overflow-hidden border position-relative d-none" id="contenedor-pregunta-imagen">
+                    <img id="pregunta-imagen-elem" src="" alt="Ilustración contextual del reactivo" class="pregunta-img w-100" loading="lazy">
+                    <div class="pregunta-imagen-credito px-2 py-1 small text-white bg-dark bg-opacity-75 position-absolute bottom-0 end-0 rounded-start">
+                      <i class="bi bi-camera-fill me-1" aria-hidden="true"></i> <span id="pregunta-imagen-fuente">Wikimedia Commons</span>
+                    </div>
+                  </div>
+
+                  <h2 id="enunciado-pregunta-texto" class="pregunta-enunciado h4 fw-bold text-body-primary mb-0">
+                    Cargando reactivo...
+                  </h2>
+                </article>
+
+                <!-- Contenedor de Opciones de Respuesta -->
+                <div class="opciones-grid mb-4" id="contenedor-opciones" role="group" aria-label="Alternativas de respuesta">
+                  <!-- Renderizado dinámico de 4 botones por ui.js -->
+                </div>
+              </div>
+
+              <!-- Panel de Retroalimentación Inmediata -->
+              <div id="box-retroalimentacion" class="retroalimentacion-box rounded-3 border p-3 p-md-4 d-none" role="alert" aria-live="assertive">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span id="retro-titulo-estado" class="retro-estado fw-bold">
+                    <!-- Estado acierto o error -->
+                  </span>
+                  <span id="retro-puntos-ganados" class="badge text-bg-light border fs-6 fw-bold">
+                    <!-- +160 pts -->
+                  </span>
+                </div>
+                <p id="retro-explicacion-texto" class="retro-explicacion text-body-secondary small mb-3">
+                  <!-- Explicación pedagógica -->
+                </p>
+                <div class="d-flex justify-content-end">
+                  <button id="btn-siguiente-pregunta" class="btn btn-primary px-4 py-2 fw-medium" type="button">
+                    <span>Siguiente Reactivo</span> <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 5. PANTALLA RESULTADO FINAL                              -->
+        <!-- ======================================================== -->
+        <section id="pantalla-resultado" class="pantalla" role="region" aria-labelledby="titulo-resultado" hidden>
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
+
+            <div class="card-body p-4 p-md-5 text-center">
+              
+              <!-- Banner Ilustrado de Logro y Reconocimiento -->
+              <div class="achievement-banner-wrapper rounded-4 overflow-hidden mb-4 border position-relative shadow-sm mx-auto col-12 col-md-11">
+                <img src="assets/img/achievement-colombia.jpg" alt="Insignia de honor y logro académico" class="achievement-banner-img w-100">
+                <div class="achievement-badge-floating position-absolute bottom-0 start-50 translate-middle-x mb-2">
+                  <span class="badge text-bg-dark bg-opacity-80 border text-warning px-3 py-2 fw-bold fs-6">
+                    <i class="bi bi-award-fill me-1"></i> Certificación de Saberes Completada
+                  </span>
+                </div>
+              </div>
+
+              <div class="resultado-icono mx-auto mb-2 d-none" id="resultado-icono-emoji" aria-hidden="true">
+                🏆
+              </div>
+
+              <h1 id="titulo-resultado" class="h3 fw-bold mb-1">
+                Informe Final de Desempeño
+              </h1>
+
+              <p class="text-secondary small mb-4">
+                Sesión completada para: <strong id="resultado-nombre-jugador" class="text-body-primary">Estudiante</strong>
+              </p>
+
+              <!-- Puntaje Total Destacado -->
+              <div class="score-display-box p-3 p-md-4 rounded-4 bg-body-tertiary border d-inline-block mx-auto mb-4 col-11 col-sm-8 col-md-6">
+                <span class="small text-secondary fw-semibold text-uppercase tracking-wider d-block mb-1">Puntuación Total Consolidada</span>
+                <div class="resultado-puntaje-destacado display-4 fw-black text-primary" id="resultado-puntaje-final">
+                  0
+                </div>
+                <span class="badge text-bg-primary mt-2">Puntos Obtenidos</span>
+              </div>
+
+              <!-- Dictamen Pedagógico -->
+              <div class="resultado-mensaje-motivo alert alert-info text-start small mx-auto mb-4 col-md-10" id="resultado-mensaje-motivo">
+                Cargando dictamen pedagógico...
+              </div>
+
+              <!-- Grid de Métricas de Rendimiento -->
+              <div class="row g-2 g-md-3 mb-4 text-start">
+                <div class="col-6 col-md-3">
+                  <div class="metric-card p-3 rounded-3 border bg-body h-100">
+                    <span class="text-secondary small d-block mb-1">Aciertos</span>
+                    <strong class="fs-5 text-success" id="resumen-aciertos-conteo">0 / 10</strong>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                  <div class="metric-card p-3 rounded-3 border bg-body h-100">
+                    <span class="text-secondary small d-block mb-1">Efectividad</span>
+                    <strong class="fs-5 text-primary" id="resumen-efectividad-porcentaje">0%</strong>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                  <div class="metric-card p-3 rounded-3 border bg-body h-100">
+                    <span class="text-secondary small d-block mb-1">Mayor Racha</span>
+                    <strong class="fs-5 text-warning-emphasis" id="resumen-mejor-racha">0</strong>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                  <div class="metric-card p-3 rounded-3 border bg-body h-100">
+                    <span class="text-secondary small d-block mb-1">Tiempo Invertido</span>
+                    <strong class="fs-5 text-secondary" id="resumen-tiempo-total">0s</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Acciones Post-Evaluación -->
+              <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                <button id="btn-jugar-de-nuevo" class="btn btn-primary px-4 py-2 fw-bold" type="button">
+                  <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i> Nueva Evaluación
+                </button>
+                <button id="btn-copiar-resumen" class="btn btn-outline-primary px-3 py-2 fw-medium" type="button">
+                  <i class="bi bi-clipboard-check me-1" aria-hidden="true"></i> Copiar Ficha de Resultados
+                </button>
+                <button id="btn-ver-ranking-desde-resultado" class="btn btn-outline-secondary px-3 py-2 fw-medium" type="button">
+                  <i class="bi bi-trophy me-1" aria-hidden="true"></i> Ver Clasificación
+                </button>
+                <button id="btn-volver-inicio-desde-resultado" class="btn btn-link text-decoration-none px-3 py-2 text-secondary" type="button">
+                  <i class="bi bi-house me-1" aria-hidden="true"></i> Menú Principal
+                </button>
+              </div>
+
+              <!-- Desglose y Auditoría de Reactivos -->
+              <div class="text-start border-top pt-4">
+                <h2 class="h6 fw-bold text-uppercase text-secondary tracking-wider mb-3">
+                  <i class="bi bi-card-checklist me-1 text-primary" aria-hidden="true"></i> Desglose Detallado de Reactivos
+                </h2>
+                <div id="contenedor-revision-preguntas" class="d-flex flex-column gap-2">
+                  <!-- Tarjetas inyectadas dinámicamente por ui.js -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 6. PANTALLA RANKING Y ESTADÍSTICAS                       -->
+        <!-- ======================================================== -->
+        <section id="pantalla-ranking" class="pantalla" role="region" aria-labelledby="titulo-ranking" hidden>
+          <div class="card app-card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="tricolor-ribbon" aria-hidden="true"></div>
+
+            <div class="card-body p-4 p-md-5">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="badge-icon bg-primary-subtle text-primary rounded-3 p-2">
+                  <i class="bi bi-trophy-fill fs-4" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h1 id="titulo-ranking" class="h3 fw-bold mb-0">
+                    Cuadro de Clasificación y Estadísticas
+                  </h1>
+                  <p class="text-secondary small mb-0">
+                    Registro de mejores puntuaciones en este dispositivo y métricas de desempeño histórico.
+                  </p>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <!-- Tabs Accesibles de Navegación -->
+              <ul class="nav nav-pills nav-fill bg-body-tertiary p-1 rounded-3 mb-4" role="tablist" aria-label="Pestañas de estadísticas">
+                <li class="nav-item" role="presentation">
+                  <button id="tab-top10" class="nav-link active py-2 fw-medium" role="tab" aria-selected="true" aria-controls="panel-top10" type="button">
+                    <i class="bi bi-list-ol me-1" aria-hidden="true"></i> Top 10 Histórico
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button id="tab-mis-stats" class="nav-link py-2 fw-medium" role="tab" aria-selected="false" aria-controls="panel-mis-stats" type="button">
+                    <i class="bi bi-graph-up me-1" aria-hidden="true"></i> Métricas Acumuladas
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Panel 1: Top 10 -->
+              <div id="panel-top10" role="tabpanel" aria-labelledby="tab-top10">
+                <div class="table-responsive rounded-3 border mb-3">
+                  <table class="table table-hover align-middle mb-0" aria-label="Tabla del Top 10 mejores puntajes">
+                    <thead class="table-light">
+                      <tr class="small text-secondary">
+                        <th scope="col" style="width: 50px;" class="ps-3">#</th>
+                        <th scope="col">Participante</th>
+                        <th scope="col">Puntaje</th>
+                        <th scope="col">Aciertos</th>
+                        <th scope="col" class="d-none d-md-table-cell">Área</th>
+                        <th scope="col" class="d-none d-md-table-cell">Complejidad</th>
+                        <th scope="col" class="d-none d-lg-table-cell pe-3">Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ranking-tbody" class="small">
+                      <!-- Filas renderizadas por ui.js -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2">
+                  <button id="btn-abrir-modal-borrar" class="btn btn-outline-danger btn-sm" type="button">
+                    <i class="bi bi-trash3 me-1" aria-hidden="true"></i> Reiniciar Ranking
+                  </button>
+                  <button id="btn-volver-menu-desde-ranking" class="btn btn-primary px-4 py-2" type="button">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Menú Principal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Panel 2: Estadísticas del Jugador -->
+              <div id="panel-mis-stats" role="tabpanel" aria-labelledby="tab-mis-stats" style="display: none;">
+                <div class="row g-2 g-md-3 mb-4">
+                  <div class="col-6 col-md-3">
+                    <div class="stat-card-grande p-3 rounded-3 border bg-body h-100">
+                      <span class="text-secondary small d-block mb-1">Sesiones Completadas</span>
+                      <strong class="fs-4 text-primary" id="stats-partidas-jugadas">0</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="stat-card-grande p-3 rounded-3 border bg-body h-100">
+                      <span class="text-secondary small d-block mb-1">Récord de Puntuación</span>
+                      <strong class="fs-4 text-success" id="stats-mejor-puntaje">0 pts</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="stat-card-grande p-3 rounded-3 border bg-body h-100">
+                      <span class="text-secondary small d-block mb-1">Tasa Global de Aciertos</span>
+                      <strong class="fs-4 text-info-emphasis" id="stats-porcentaje-aciertos">0%</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="stat-card-grande p-3 rounded-3 border bg-body h-100">
+                      <span class="text-secondary small d-block mb-1">Racha Máxima</span>
+                      <strong class="fs-4 text-warning-emphasis" id="stats-mejor-racha">0</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <h2 class="h6 fw-bold text-uppercase text-secondary tracking-wider mb-3">
+                  Rendimiento por Área de Conocimiento
+                </h2>
+                
+                <div id="contenedor-stats-categorias" class="d-flex flex-column gap-3 mb-4">
+                  <!-- Barras de desempeño inyectadas por ui.js -->
+                </div>
+
+                <div class="d-flex justify-content-end pt-2">
+                  <button id="btn-volver-desde-stats" class="btn btn-primary px-4 py-2" type="button">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Menú Principal
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
 
       </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- 5. PANTALLA RESULTADO FINAL                              -->
-    <!-- ======================================================== -->
-    <section id="pantalla-resultado" class="pantalla" role="region" aria-labelledby="titulo-resultado">
-      <div class="card resultado-card card--accent-top">
-        <div class="resultado-icono" id="resultado-icono-emoji" aria-hidden="true">🏆</div>
-        
-        <h1 id="titulo-resultado" class="titulo-seccion" style="justify-content: center;">
-          ¡Partida Finalizada!
-        </h1>
-
-        <p class="resultado-jugador-titulo">
-          Excelente esfuerzo, <strong id="resultado-nombre-jugador">Jugador</strong>.
-        </p>
-
-        <div class="resultado-puntaje-destacado" id="resultado-puntaje-final">
-          0
-        </div>
-        <div style="font-weight: 700; color: var(--text-muted); margin-bottom: 1.5rem;">PUNTOS TOTALES</div>
-
-        <!-- Mensaje Motivacional -->
-        <div class="resultado-mensaje-motivo" id="resultado-mensaje-motivo">
-          Cargando resultado...
-        </div>
-
-        <!-- Métricas Resumen -->
-        <div class="metricas-grid">
-          <div class="metrica-item">
-            <span class="metrica-label">Aciertos</span>
-            <span class="metrica-valor" id="resumen-aciertos-conteo" style="color: var(--co-verde);">0 / 10</span>
-          </div>
-          <div class="metrica-item">
-            <span class="metrica-label">Efectividad</span>
-            <span class="metrica-valor" id="resumen-efectividad-porcentaje">0%</span>
-          </div>
-          <div class="metrica-item">
-            <span class="metrica-label">Mejor Racha</span>
-            <span class="metrica-valor" id="resumen-mejor-racha" style="color: #EA580C;">🔥 0</span>
-          </div>
-          <div class="metrica-item">
-            <span class="metrica-label">Tiempo Total</span>
-            <span class="metrica-valor" id="resumen-tiempo-total">0s</span>
-          </div>
-        </div>
-
-        <!-- Botones de Acción de Fin de Partida -->
-        <div class="acciones-resultado">
-          <button id="btn-jugar-de-nuevo" class="btn btn-primary btn-lg" type="button">
-            <span>🔄</span> Jugar de Nuevo
-          </button>
-          <button id="btn-ver-ranking-desde-resultado" class="btn btn-secondary btn-lg" type="button">
-            <span>🏆</span> Ver Ranking
-          </button>
-          <button id="btn-volver-inicio-desde-resultado" class="btn btn-outline" type="button">
-            <span>🏠</span> Inicio
-          </button>
-        </div>
-
-        <!-- Revisión Detallada de Preguntas -->
-        <div class="revision-seccion">
-          <h2 class="revision-header">Revisión de Preguntas de la Partida</h2>
-          <div id="contenedor-revision-preguntas">
-            <!-- Desglose de preguntas acertadas y falladas con explicaciones -->
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- 6. PANTALLA RANKING Y ESTADÍSTICAS                       -->
-    <!-- ======================================================== -->
-    <section id="pantalla-ranking" class="pantalla" role="region" aria-labelledby="titulo-ranking">
-      <div class="card card--accent-top">
-        <h1 id="titulo-ranking" class="titulo-seccion">
-          <span>🏆</span> Ranking y Estadísticas del Jugador
-        </h1>
-        <p class="subtitulo-seccion">
-          Consulta las mejores puntuaciones registradas en este dispositivo y tus estadísticas acumuladas.
-        </p>
-
-        <!-- Navegación por pestañas (Tabs Accesibles) -->
-        <div class="ranking-tabs" role="tablist" aria-label="Secciones de Ranking">
-          <button id="tab-top10" class="tab-btn activo" role="tab" aria-selected="true" aria-controls="panel-top10" type="button">
-            Top 10 Histórico
-          </button>
-          <button id="tab-mis-stats" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-mis-stats" type="button">
-            Estadísticas Globales
-          </button>
-        </div>
-
-        <!-- Panel 1: Top 10 -->
-        <div id="panel-top10" role="tabpanel" aria-labelledby="tab-top10">
-          <div class="tabla-container">
-            <table class="ranking-tabla" aria-label="Tabla del Top 10 mejores puntajes">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 60px;">#</th>
-                  <th scope="col">Jugador</th>
-                  <th scope="col">Puntaje</th>
-                  <th scope="col">Aciertos</th>
-                  <th scope="col" class="col-oculta-movil">Categoría</th>
-                  <th scope="col" class="col-oculta-movil">Dificultad</th>
-                  <th scope="col" class="col-oculta-movil">Fecha</th>
-                </tr>
-              </thead>
-              <tbody id="ranking-tbody">
-                <!-- Filas renderizadas por ui.js -->
-              </tbody>
-            </table>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
-            <button id="btn-abrir-modal-borrar" class="btn btn-outline" style="color: var(--co-rojo);" type="button">
-              <span>🗑️</span> Borrar Ranking
-            </button>
-            <button id="btn-volver-menu-desde-ranking" class="btn btn-primary" type="button">
-              <span>⬅️</span> Volver al Menú
-            </button>
-          </div>
-        </div>
-
-        <!-- Panel 2: Estadísticas del Jugador -->
-        <div id="panel-mis-stats" role="tabpanel" aria-labelledby="tab-mis-stats" style="display: none;">
-          <div class="stats-cards-grid">
-            <div class="stat-card-grande">
-              <span class="metrica-label">Partidas Jugadas</span>
-              <div class="stat-numero" id="stats-partidas-jugadas">0</div>
-            </div>
-            <div class="stat-card-grande">
-              <span class="metrica-label">Mejor Puntaje Histórico</span>
-              <div class="stat-numero" id="stats-mejor-puntaje">0 pts</div>
-            </div>
-            <div class="stat-card-grande">
-              <span class="metrica-label">Porcentaje Global de Aciertos</span>
-              <div class="stat-numero" id="stats-porcentaje-aciertos">0%</div>
-            </div>
-            <div class="stat-card-grande">
-              <span class="metrica-label">Racha Histórica Máxima</span>
-              <div class="stat-numero" id="stats-mejor-racha">0</div>
-            </div>
-          </div>
-
-          <h2 class="revision-header" style="margin-top: 1.5rem;">Desempeño por Categoría</h2>
-          <div class="categoria-stats-lista" id="contenedor-stats-categorias">
-            <!-- Barras de desempeño por categoría -->
-          </div>
-
-          <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
-            <button id="btn-volver-desde-stats" class="btn btn-primary" type="button">
-              <span>⬅️</span> Volver al Menú
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
+    </div>
   </main>
 
   <!-- ======================================================== -->
-  <!-- MODAL ACCESIBLE: CONFIRMACIÓN PARA BORRAR RANKING        -->
+  <!-- MODAL ACCESIBLE: ATAJOS DE TECLADO                       -->
   <!-- ======================================================== -->
-  <dialog id="modal-confirmar-borrar" class="modal-confirmacion" aria-labelledby="modal-titulo-borrar" aria-modal="true">
-    <h2 id="modal-titulo-borrar" class="modal-titulo">¿Confirmar eliminación?</h2>
-    <p class="modal-texto">
-      Esta acción borrará irreversiblemente todos los puntajes guardados en el Top 10 de este dispositivo.
-    </p>
-    <div class="modal-acciones">
-      <button id="btn-cancelar-borrar-ranking" class="btn btn-secondary" type="button">
-        Cancelar
-      </button>
-      <button id="btn-confirmar-borrar-ranking" class="btn btn-danger" type="button">
-        Sí, borrar ranking
-      </button>
+  <dialog id="modal-atajos" class="modal-dialog-accessible" aria-labelledby="modal-titulo-atajos" aria-modal="true">
+    <div class="p-4">
+      <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+        <div class="d-flex align-items-center gap-2 text-primary">
+          <i class="bi bi-keyboard-fill fs-4" aria-hidden="true"></i>
+          <h2 id="modal-titulo-atajos" class="h5 fw-bold mb-0">Atajos de Teclado (Accesibilidad)</h2>
+        </div>
+        <button id="btn-cerrar-modal-atajos-x" class="btn-close" aria-label="Cerrar ventana de atajos"></button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle small mb-0">
+          <tbody>
+            <tr>
+              <td><kbd class="px-2 py-1">1</kbd> <kbd class="px-2 py-1">2</kbd> <kbd class="px-2 py-1">3</kbd> <kbd class="px-2 py-1">4</kbd></td>
+              <td class="text-secondary">Seleccionar alternativas de respuesta A, B, C o D</td>
+            </tr>
+            <tr>
+              <td><kbd class="px-2 py-1">C</kbd></td>
+              <td class="text-secondary">Activar Comodín 50/50 (descarta 2 opciones)</td>
+            </tr>
+            <tr>
+              <td><kbd class="px-2 py-1">T</kbd></td>
+              <td class="text-secondary">Activar Comodín de Tiempo (+10 segundos al reloj)</td>
+            </tr>
+            <tr>
+              <td><kbd class="px-2 py-1">Enter</kbd></td>
+              <td class="text-secondary">Avanzar al siguiente reactivo tras responder</td>
+            </tr>
+            <tr>
+              <td><kbd class="px-2 py-1">?</kbd></td>
+              <td class="text-secondary">Abrir esta guía de atajos de teclado</td>
+            </tr>
+            <tr>
+              <td><kbd class="px-2 py-1">Escape</kbd></td>
+              <td class="text-secondary">Cerrar modales y cuadros de diálogo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button id="btn-cerrar-modal-atajos" class="btn btn-primary btn-sm px-4" type="button">
+          Entendido
+        </button>
+      </div>
     </div>
   </dialog>
 
   <!-- ======================================================== -->
+  <!-- MODAL ACCESIBLE: CONFIRMACIÓN PARA BORRAR RANKING        -->
+  <!-- ======================================================== -->
+  <dialog id="modal-confirmar-borrar" class="modal-dialog-accessible" aria-labelledby="modal-titulo-borrar" aria-modal="true">
+    <div class="p-4">
+      <div class="d-flex align-items-center gap-2 text-danger mb-2">
+        <i class="bi bi-exclamation-triangle-fill fs-4" aria-hidden="true"></i>
+        <h2 id="modal-titulo-borrar" class="h5 fw-bold mb-0">¿Confirmar eliminación del ranking?</h2>
+      </div>
+      <p class="text-secondary small mb-4">
+        Esta acción eliminará de forma irreversible todos los registros del Top 10 guardados en el almacenamiento local de este navegador.
+      </p>
+      <div class="d-flex justify-content-end gap-2">
+        <button id="btn-cancelar-borrar-ranking" class="btn btn-outline-secondary btn-sm px-3" type="button">
+          Cancelar
+        </button>
+        <button id="btn-confirmar-borrar-ranking" class="btn btn-danger btn-sm px-3" type="button">
+          Sí, eliminar registros
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ======================================================== -->
+  <!-- TOASTS DE NOTIFICACIÓN FLOTANTES                         -->
+  <!-- ======================================================== -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+    <div id="toast-notificacion" class="toast align-items-center border-0 shadow-lg" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body d-flex align-items-center gap-2" id="toast-notificacion-texto">
+          <i class="bi bi-info-circle-fill text-primary" aria-hidden="true"></i> Notificación del sistema
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
   <!-- PIE DE PÁGINA SEMÁNTICO                                  -->
   <!-- ======================================================== -->
-  <footer class="app-footer" role="contentinfo">
-    <div class="footer-creditos">
-      <p>
-        <strong>Trivia Colombia – Juego de Preguntas</strong> | Proyecto Parcial de Desarrollo Full Stack
+  <footer class="app-footer border-top py-4 mt-auto text-secondary small" role="contentinfo">
+    <div class="container text-center">
+      <p class="mb-1 fw-semibold text-body-secondary">
+        Trivia Colombia – Evaluación de Saberes y Patrimonio Nacional
       </p>
-      <p>
-        Universidad de Santander (UDES) &bull; Docente: Carlos Carrascal &bull; Octubre de 2026
+      <p class="mb-1 text-muted">
+        Universidad de Santander (UDES) &bull; Desarrollo Web Full Stack &bull; Docente: Carlos Carrascal &bull; 2026
       </p>
-      <p style="font-size: 0.8rem; margin-top: 0.25rem;">
-        Construido con HTML5 Semántico, CSS3 Flexbox/Grid, Vanilla JS ES6+ y accesibilidad WCAG 2.1 AA/AAA.
+      <p class="mb-0 text-muted" style="font-size: 0.8rem;">
+        Implementado con HTML5 semántico, Bootstrap 5.3, Vanilla JS ES6+ y cumplimiento de accesibilidad WCAG 2.1 AA/AAA.
       </p>
     </div>
   </footer>
 
-  <!-- Scripts en Orden de Dependencia Modular (Sección 8) -->
+  <!-- ======================================================== -->
+  <!-- SCRIPTS EN ORDEN DE DEPENDENCIA MODULAR                  -->
+  <!-- ======================================================== -->
+  <!-- Confetti Canvas (Efectos visuales ligeros) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Bootstrap 5.3 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Módulos de la Aplicación -->
   <script src="js/preguntas.js"></script>
   <script src="js/almacenamiento.js"></script>
   <script src="js/juego.js"></script>

@@ -185,7 +185,7 @@ const App = {
     const iconoSonido = document.getElementById('icono-sonido');
     if (btnSonido && iconoSonido) {
       btnSonido.setAttribute('aria-pressed', GestorSonido.activo);
-      iconoSonido.textContent = GestorSonido.activo ? '🔊' : '🔇';
+      iconoSonido.className = GestorSonido.activo ? 'bi bi-volume-up-fill' : 'bi bi-volume-mute-fill';
       btnSonido.setAttribute('title', `Sonido (${GestorSonido.activo ? 'Activado' : 'Desactivado'})`);
     }
 
@@ -195,7 +195,7 @@ const App = {
     if (config.temaOscuro) {
       document.documentElement.setAttribute('data-theme', 'dark');
       if (btnTema) btnTema.setAttribute('aria-pressed', 'true');
-      if (iconoTema) iconoTema.textContent = '☀️';
+      if (iconoTema) iconoTema.className = 'bi bi-sun-fill';
     }
 
     // Modo Alto Contraste
@@ -258,7 +258,7 @@ const App = {
         GestorSonido.activo = !GestorSonido.activo;
         btnSonido.setAttribute('aria-pressed', GestorSonido.activo);
         const icono = document.getElementById('icono-sonido');
-        if (icono) icono.textContent = GestorSonido.activo ? '🔊' : '🔇';
+        if (icono) icono.className = GestorSonido.activo ? 'bi bi-volume-up-fill' : 'bi bi-volume-mute-fill';
         btnSonido.setAttribute('title', `Sonido (${GestorSonido.activo ? 'Activado' : 'Desactivado'})`);
         Almacenamiento.guardarConfiguracion({ sonido: GestorSonido.activo });
         UI.anunciar(`Sonido ${GestorSonido.activo ? 'activado' : 'desactivado'}.`);
@@ -277,7 +277,7 @@ const App = {
         }
         btnTema.setAttribute('aria-pressed', nuevoOscuro);
         const icono = document.getElementById('icono-tema');
-        if (icono) icono.textContent = nuevoOscuro ? '☀️' : '🌙';
+        if (icono) icono.className = nuevoOscuro ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
         Almacenamiento.guardarConfiguracion({ temaOscuro: nuevoOscuro });
         UI.anunciar(`Modo ${nuevoOscuro ? 'oscuro' : 'claro'} activado.`);
       });
@@ -340,7 +340,11 @@ const App = {
     if (inputNombre) {
       inputNombre.addEventListener('input', () => {
         if (inputNombre.value.trim().length > 0) {
-          errorNombre.classList.remove('visible');
+          if (errorNombre) {
+            errorNombre.classList.remove('visible', 'd-block');
+            errorNombre.classList.add('d-none');
+          }
+          inputNombre.classList.remove('is-invalid');
         }
       });
 
@@ -358,8 +362,14 @@ const App = {
 
         // RF-01: Solicitar nombre antes de iniciar y no permitir nombre vacío
         if (!nombre) {
-          if (errorNombre) errorNombre.classList.add('visible');
-          if (inputNombre) inputNombre.focus();
+          if (errorNombre) {
+            errorNombre.classList.remove('d-none');
+            errorNombre.classList.add('visible', 'd-block');
+          }
+          if (inputNombre) {
+            inputNombre.classList.add('is-invalid');
+            inputNombre.focus();
+          }
           UI.anunciar('Error: El nombre del jugador no puede estar vacío.');
           return;
         }
@@ -503,6 +513,69 @@ const App = {
       btnVolverInicioResultado.addEventListener('click', () => UI.cambiarPantalla('inicio'));
     }
 
+    // Botón Copiar Ficha de Resultados al Portapapeles
+    const btnCopiarResumen = document.getElementById('btn-copiar-resumen');
+    if (btnCopiarResumen) {
+      btnCopiarResumen.addEventListener('click', () => {
+        const jugador = document.getElementById('resultado-nombre-jugador')?.textContent || 'Participante';
+        const puntaje = document.getElementById('resultado-puntaje-final')?.textContent || '0';
+        const aciertos = document.getElementById('resumen-aciertos-conteo')?.textContent || '0 / 10';
+        const efectividad = document.getElementById('resumen-efectividad-porcentaje')?.textContent || '0%';
+        const racha = document.getElementById('resumen-mejor-racha')?.textContent || '0';
+        const tiempo = document.getElementById('resumen-tiempo-total')?.textContent || '0s';
+        const dictamen = document.getElementById('resultado-mensaje-motivo')?.textContent || '';
+
+        const textoFicha = `🇨🇴 Trivia Colombia - Ficha Oficial de Resultados\n` +
+          `• Participante: ${jugador}\n` +
+          `• Puntuación Total: ${puntaje} pts\n` +
+          `• Reactivos Acertados: ${aciertos} (${efectividad})\n` +
+          `• Mayor Racha Consecutiva: ${racha}\n` +
+          `• Tiempo Invertido: ${tiempo}\n` +
+          `• Evaluación Pedagógica: ${dictamen.trim()}\n` +
+          `• Entorno Académico: Universidad de Santander (UDES)`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textoFicha).then(() => {
+            UI.mostrarToast('Ficha de resultados copiada al portapapeles', 'bi-clipboard-check-fill');
+          }).catch(() => {
+            UI.mostrarToast('No se pudo copiar automáticamente', 'bi-exclamation-triangle-fill');
+          });
+        } else {
+          UI.mostrarToast('Portapapeles no compatible en este navegador', 'bi-exclamation-triangle-fill');
+        }
+      });
+    }
+
+    // Modal de Atajos de Teclado
+    const modalAtajos = document.getElementById('modal-atajos');
+    const btnToggleAtajos = document.getElementById('btn-toggle-atajos');
+    const btnCerrarAtajos = document.getElementById('btn-cerrar-modal-atajos');
+    const btnCerrarAtajosX = document.getElementById('btn-cerrar-modal-atajos-x');
+
+    const abrirAtajos = () => {
+      if (modalAtajos) {
+        if (typeof modalAtajos.showModal === 'function') {
+          modalAtajos.showModal();
+        } else {
+          modalAtajos.setAttribute('open', '');
+        }
+      }
+    };
+
+    const cerrarAtajos = () => {
+      if (modalAtajos) {
+        if (typeof modalAtajos.close === 'function') {
+          modalAtajos.close();
+        } else {
+          modalAtajos.removeAttribute('open');
+        }
+      }
+    };
+
+    if (btnToggleAtajos) btnToggleAtajos.addEventListener('click', abrirAtajos);
+    if (btnCerrarAtajos) btnCerrarAtajos.addEventListener('click', cerrarAtajos);
+    if (btnCerrarAtajosX) btnCerrarAtajosX.addEventListener('click', cerrarAtajos);
+
     // ----------------------------------------------------
     // Pantalla Ranking y Estadísticas
     // ----------------------------------------------------
@@ -590,6 +663,16 @@ const App = {
     window.addEventListener('keydown', (e) => {
       // Si el usuario está escribiendo en un input, no interceptar atajos
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      // Tecla ? para abrir atajos de teclado
+      if (e.key === '?') {
+        e.preventDefault();
+        const modalAtajos = document.getElementById('modal-atajos');
+        if (modalAtajos && typeof modalAtajos.showModal === 'function') {
+          modalAtajos.showModal();
+        }
+        return;
+      }
 
       const pantallaJuegoActiva = UI.pantallas.juego && UI.pantallas.juego.classList.contains('pantalla--activa');
       if (!pantallaJuegoActiva) return;
@@ -706,7 +789,9 @@ const App = {
 
     if (tipo === 'cincuenta') {
       UI.descartarOpciones5050(resultado.descartadas);
+      UI.mostrarToast('Comodín 50/50 activado (-30 pts)', 'bi-scissors');
     } else if (tipo === 'tiempo') {
+      UI.mostrarToast('Comodín de Tiempo activado (+10s, -30 pts)', 'bi-alarm-fill');
       UI.anunciar('¡Comodín de tiempo aplicado! Se agregaron 10 segundos extra. Penalización de 30 puntos aplicada.');
     }
   },

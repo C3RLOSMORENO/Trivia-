@@ -298,6 +298,8 @@ const Juego = {
       pregunta: pregunta.enunciado,
       categoria: pregunta.categoria,
       dificultad: pregunta.dificultad,
+      imagen: pregunta.imagen,
+      fuenteImagen: pregunta.fuenteImagen,
       ...resultado
     });
 
@@ -394,24 +396,24 @@ const Juego = {
     const aciertos = this.estado.aciertos;
     const porcentaje = Math.round((aciertos / total) * 100);
 
-    // Mensaje motivacional según desempeño
+    // Mensaje de evaluación pedagógica según porcentaje de acierto
     let mensaje = '';
     let emoji = '';
     if (porcentaje === 100) {
-      mensaje = '¡Puntaje perfecto! Eres un auténtico maestro de la identidad y cultura colombiana.';
-      emoji = '🏆🇨🇴';
+      mensaje = 'Dominio sobresaliente y exhaustivo. Demuestras una comprensión integral de los saberes y el patrimonio nacional de Colombia.';
+      emoji = '🏆';
     } else if (porcentaje >= 80) {
-      mensaje = '¡Excelente desempeño! Tienes un conocimiento sobresaliente de Colombia.';
-      emoji = '🎉✨';
+      mensaje = 'Desempeño destacado. Evidencias un conocimiento estructurado y solvente en historia, geografía, cultura y biodiversidad colombiana.';
+      emoji = '🎖️';
     } else if (porcentaje >= 60) {
-      mensaje = '¡Buen trabajo! Superaste la prueba con bases sólidas sobre el país.';
-      emoji = '👏👍';
+      mensaje = 'Desempeño satisfactorio. Superaste los criterios de evaluación con bases conceptuales sólidas.';
+      emoji = '✅';
     } else if (porcentaje >= 40) {
-      mensaje = '¡Bien jugado! Puedes mejorar repasando historia, geografía y tradiciones.';
-      emoji = '📚🌱';
+      mensaje = 'Desempeño básico. Es recomendable profundizar en los hitos de la historia republicana y las regiones geográficas del país.';
+      emoji = '📘';
     } else {
-      mensaje = '¡Ánimo! El camino del aprendizaje apenas comienza. ¡Inténtalo de nuevo!';
-      emoji = '💪🇨🇴';
+      mensaje = 'Desempeño en desarrollo. Te invitamos a revisar los contenidos temáticos y realizar una nueva evaluación diagnóstica.';
+      emoji = '🎯';
     }
 
     const resumen = {
