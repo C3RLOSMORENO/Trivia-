@@ -513,6 +513,14 @@ const App = {
       btnVolverInicioResultado.addEventListener('click', () => UI.cambiarPantalla('inicio'));
     }
 
+    // Botón Imprimir Ficha Oficial Académica
+    const btnImprimirResultado = document.getElementById('btn-imprimir-resultado');
+    if (btnImprimirResultado) {
+      btnImprimirResultado.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
     // Botón Copiar Ficha de Resultados al Portapapeles
     const btnCopiarResumen = document.getElementById('btn-copiar-resumen');
     if (btnCopiarResumen) {
@@ -706,7 +714,7 @@ const App = {
       }
 
       // Tecla Enter o Espacio para avanzar si la retroalimentación está visible
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' || e.code === 'Space') {
         const btnSiguiente = document.getElementById('btn-siguiente-pregunta');
         const boxRetro = document.getElementById('box-retroalimentacion');
         if (boxRetro && boxRetro.classList.contains('visible') && btnSiguiente) {

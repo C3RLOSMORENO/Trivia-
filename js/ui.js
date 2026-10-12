@@ -209,12 +209,25 @@ const UI = {
         const idx = parseInt(btn.dataset.indice, 10);
         btn.disabled = true; // Bloquear opciones tras responder (RF-07)
 
+        const badgePrevio = btn.querySelector('.opcion-estado-badge');
+        if (badgePrevio) badgePrevio.remove();
+
         if (idx === resultado.indiceCorrecto) {
           btn.classList.add('correcta');
           btn.setAttribute('aria-label', `${btn.textContent} (Respuesta Correcta)`);
+          const badge = document.createElement('span');
+          badge.className = 'badge text-bg-success ms-2 opcion-estado-badge d-inline-flex align-items-center gap-1 shadow-2xs';
+          badge.innerHTML = '<i class="bi bi-check-circle-fill" aria-hidden="true"></i> Correcta';
+          btn.appendChild(badge);
         } else if (idx === resultado.indiceSeleccionado) {
           btn.classList.add('incorrecta');
           btn.setAttribute('aria-label', `${btn.textContent} (Tu selección incorrecta)`);
+          const badge = document.createElement('span');
+          badge.className = 'badge text-bg-danger ms-2 opcion-estado-badge d-inline-flex align-items-center gap-1 shadow-2xs';
+          badge.innerHTML = '<i class="bi bi-x-circle-fill" aria-hidden="true"></i> Tu selección';
+          btn.appendChild(badge);
+        } else {
+          btn.classList.add('atenuada');
         }
       });
     }
@@ -222,22 +235,60 @@ const UI = {
     // Panel de retroalimentación
     const boxRetro = document.getElementById('box-retroalimentacion');
     const retroTitulo = document.getElementById('retro-titulo-estado');
+    const retroIcono = document.getElementById('retro-icono-estado');
     const retroPuntos = document.getElementById('retro-puntos-ganados');
     const retroExplicacion = document.getElementById('retro-explicacion-texto');
+    const retroFuente = document.getElementById('retro-fuente-credito');
+    const retroFuenteTexto = document.getElementById('retro-fuente-credito-texto');
     const btnSiguiente = document.getElementById('btn-siguiente-pregunta');
+    const desglosePuntos = document.getElementById('retro-desglose-puntos');
+    const badgeBonoTiempo = document.getElementById('badge-bono-tiempo');
+    const badgeBonoRacha = document.getElementById('badge-bono-racha');
+    const badgeMultiplicador = document.getElementById('badge-multiplicador');
+    const comparativaRespuestas = document.getElementById('retro-comparativa-respuestas');
+    const tuSeleccionSpan = document.querySelector('#retro-tu-seleccion span');
+    const respuestaCorrectaSpan = document.querySelector('#retro-respuesta-correcta span');
 
     if (!boxRetro) return;
 
-    boxRetro.classList.remove('retroalimentacion-box--acierto', 'retroalimentacion-box--error');
+    boxRetro.classList.remove('d-none', 'visible', 'retroalimentacion-box--acierto', 'retroalimentacion-box--error');
+    boxRetro.classList.add('visible');
 
     if (resultado.esCorrecta) {
-      boxRetro.classList.add('visible', 'retroalimentacion-box--acierto');
-      retroTitulo.className = 'retro-estado retro-estado--acierto';
-      retroTitulo.innerHTML = '<i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i> ¡Respuesta Correcta!';
-      retroPuntos.textContent = `+${resultado.puntosGanados} pts`;
-      if (resultado.bonoRacha > 0) {
-        retroPuntos.textContent += ` (+50 pts Bono de Racha 🔥)`;
+      boxRetro.classList.add('retroalimentacion-box--acierto');
+      if (retroIcono) retroIcono.innerHTML = '<i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>';
+      if (retroTitulo) {
+        retroTitulo.className = 'retro-estado text-success fw-bold h5 mb-0';
+        if (resultado.rachaActual >= 3) {
+          retroTitulo.innerHTML = `¡Racha Imparable! 🔥 <span class="badge text-bg-warning text-dark ms-1">${resultado.rachaActual} aciertos seguidos</span>`;
+        } else if (resultado.tiempoSobrante >= 15) {
+          retroTitulo.textContent = '¡Extraordinaria Rapidez y Precisión! ⚡';
+        } else {
+          retroTitulo.textContent = '¡Excelente! Respuesta Correcta';
+        }
       }
+      if (retroPuntos) {
+        retroPuntos.className = 'badge text-bg-success border fs-6 fw-bold shadow-2xs';
+        retroPuntos.textContent = `+${resultado.puntosGanados} pts`;
+      }
+
+      // Desglose de puntuación visible
+      if (desglosePuntos) {
+        desglosePuntos.classList.remove('d-none');
+        if (badgeBonoTiempo) badgeBonoTiempo.textContent = `+${resultado.bonoTiempo || 0} pts rapidez (${resultado.tiempoSobrante || 0}s)`;
+        if (badgeBonoRacha) {
+          if (resultado.bonoRacha > 0) {
+            badgeBonoRacha.classList.remove('d-none');
+          } else {
+            badgeBonoRacha.classList.add('d-none');
+          }
+        }
+        if (badgeMultiplicador) {
+          badgeMultiplicador.textContent = `Factor de dificultad: x${resultado.multiplicador || 1.0}`;
+        }
+      }
+
+      if (comparativaRespuestas) comparativaRespuestas.classList.add('d-none');
 
       // Celebración Confetti sutil
       if (typeof window.confetti === 'function') {
@@ -248,15 +299,44 @@ const UI = {
         });
       }
     } else {
-      boxRetro.classList.add('visible', 'retroalimentacion-box--error');
-      retroTitulo.className = 'retro-estado retro-estado--error';
-      retroTitulo.innerHTML = resultado.tiempoAgotado 
-        ? '<i class="bi bi-alarm-fill me-2" aria-hidden="true"></i> ¡Tiempo Límite Agotado!' 
-        : '<i class="bi bi-x-circle-fill me-2" aria-hidden="true"></i> Respuesta Incorrecta';
-      retroPuntos.textContent = '+0 pts';
+      boxRetro.classList.add('retroalimentacion-box--error');
+      if (retroIcono) {
+        retroIcono.innerHTML = resultado.tiempoAgotado 
+          ? '<i class="bi bi-alarm-fill text-warning" aria-hidden="true"></i>' 
+          : '<i class="bi bi-x-circle-fill text-danger" aria-hidden="true"></i>';
+      }
+      if (retroTitulo) {
+        retroTitulo.className = resultado.tiempoAgotado ? 'retro-estado text-warning-emphasis fw-bold h5 mb-0' : 'retro-estado text-danger fw-bold h5 mb-0';
+        retroTitulo.textContent = resultado.tiempoAgotado 
+          ? 'Tiempo Límite Agotado (20 segundos)' 
+          : 'Respuesta Incorrecta — Refuerzo Pedagógico';
+      }
+      if (retroPuntos) {
+        retroPuntos.className = 'badge text-bg-secondary border fs-6 fw-bold shadow-2xs';
+        retroPuntos.textContent = '+0 pts';
+      }
+
+      if (desglosePuntos) desglosePuntos.classList.add('d-none');
+
+      // Comparativa de respuestas para aprendizaje correctivo
+      if (comparativaRespuestas) {
+        comparativaRespuestas.classList.remove('d-none');
+        if (tuSeleccionSpan) tuSeleccionSpan.textContent = resultado.opcionSeleccionadaTexto;
+        if (respuestaCorrectaSpan) respuestaCorrectaSpan.textContent = resultado.opcionCorrectaTexto;
+      }
     }
 
-    retroExplicacion.textContent = resultado.explicacion;
+    if (retroExplicacion) retroExplicacion.textContent = resultado.explicacion;
+
+    // Mostrar crédito de imagen/documento en el panel pedagógico
+    if (retroFuente && retroFuenteTexto) {
+      if (resultado.fuenteImagen) {
+        retroFuenteTexto.textContent = resultado.fuenteImagen;
+        retroFuente.classList.remove('d-none');
+      } else {
+        retroFuente.classList.add('d-none');
+      }
+    }
 
     // Foco directo al botón siguiente para fluidez con teclado
     if (btnSiguiente) {
@@ -348,19 +428,173 @@ const UI = {
         card.innerHTML = `
           ${thumbHTML}
           <div class="flex-grow-1">
-            <div class="revision-pregunta">
-              ${icono} Reactivo #${item.numero}: ${item.pregunta}
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
+              <div class="revision-pregunta mb-0">
+                ${icono} Reactivo #${item.numero}: ${item.pregunta}
+              </div>
+              <span class="badge ${item.esCorrecta ? 'text-bg-success' : 'text-bg-secondary'} small">
+                ${item.esCorrecta ? `+${item.puntosGanados || 0} pts` : '0 pts'}
+              </span>
             </div>
-            <div class="revision-detalle">
-              <p><strong>Tu respuesta:</strong> ${item.opcionSeleccionadaTexto}</p>
-              ${!item.esCorrecta ? `<p><strong>Respuesta correcta:</strong> ${item.opcionCorrectaTexto}</p>` : ''}
-              <p class="mt-1 text-secondary"><em>Justificación pedagógica: ${item.explicacion}</em></p>
-              ${item.fuenteImagen ? `<p class="mt-1 text-muted small" style="font-size: 0.72rem;"><i class="bi bi-camera me-1"></i>${item.fuenteImagen}</p>` : ''}
+            <div class="revision-detalle mt-2">
+              <div class="d-flex flex-column gap-1">
+                <div class="small ${item.esCorrecta ? 'text-success fw-semibold' : 'text-danger fw-semibold'}">
+                  <i class="bi ${item.esCorrecta ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i>
+                  <strong>Tu respuesta:</strong> ${item.opcionSeleccionadaTexto}
+                </div>
+                ${!item.esCorrecta ? `
+                  <div class="small text-success fw-semibold">
+                    <i class="bi bi-check-circle-fill me-1"></i>
+                    <strong>Respuesta oficial correcta:</strong> ${item.opcionCorrectaTexto}
+                  </div>
+                ` : ''}
+              </div>
+              <div class="p-2 rounded-2 bg-body-tertiary border mt-2 small text-secondary">
+                <i class="bi bi-mortarboard-fill text-primary me-1" aria-hidden="true"></i>
+                <strong>Justificación pedagógica:</strong> ${item.explicacion}
+              </div>
+              ${item.fuenteImagen ? `<div class="mt-1 text-muted small" style="font-size: 0.74rem;"><i class="bi bi-camera me-1"></i>Crédito de imagen: ${item.fuenteImagen}</div>` : ''}
             </div>
           </div>
         `;
         contenedorRevision.appendChild(card);
       });
+    }
+
+    // Fecha en membrete imprimible
+    const fechaElem = document.getElementById('print-fecha-emision');
+    if (fechaElem) {
+      const hoy = new Date();
+      fechaElem.textContent = `Fecha de evaluación: ${hoy.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' })}`;
+    }
+
+    // Renderizar Diagnóstico de Competencias por Área Evaluada
+    const areasGrid = document.getElementById('diagnostico-areas-grid');
+    const recomendacionTexto = document.getElementById('diagnostico-recomendacion-texto');
+    
+    if (areasGrid && Array.isArray(resumen.historialRespuestas)) {
+      areasGrid.innerHTML = '';
+
+      const statsPartida = {};
+      resumen.historialRespuestas.forEach(item => {
+        const cat = item.categoria || 'general';
+        if (!statsPartida[cat]) {
+          statsPartida[cat] = { aciertos: 0, total: 0 };
+        }
+        statsPartida[cat].total += 1;
+        if (item.esCorrecta) {
+          statsPartida[cat].aciertos += 1;
+        }
+      });
+
+      let peorCategoria = null;
+      let menorPorcentaje = 101;
+
+      Object.entries(statsPartida).forEach(([catKey, data]) => {
+        const catInfo = CATEGORIAS_INFO[catKey] || { nombre: catKey, icono: '📌' };
+        const porcentaje = Math.round((data.aciertos / data.total) * 100);
+
+        if (porcentaje < menorPorcentaje) {
+          menorPorcentaje = porcentaje;
+          peorCategoria = catKey;
+        }
+
+        let badgeClass = 'text-bg-success';
+        let nivelTexto = 'Dominio Excelente';
+        if (porcentaje < 50) {
+          badgeClass = 'text-bg-danger';
+          nivelTexto = 'Requiere Refuerzo';
+        } else if (porcentaje < 80) {
+          badgeClass = 'text-bg-warning';
+          nivelTexto = 'Nivel Aceptable';
+        }
+
+        const colorBar = porcentaje >= 80 ? 'bg-success' : (porcentaje >= 50 ? 'bg-warning' : 'bg-danger');
+
+        const itemArea = document.createElement('div');
+        itemArea.className = 'p-3 rounded-3 bg-body border d-flex flex-column gap-2';
+        itemArea.innerHTML = `
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="fs-5" aria-hidden="true">${catInfo.icono || '📌'}</span>
+              <span class="fw-bold small text-body">${catInfo.nombre}</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="small text-secondary fw-semibold">${data.aciertos} de ${data.total} (${porcentaje}%)</span>
+              <span class="badge ${badgeClass} small">${nivelTexto}</span>
+            </div>
+          </div>
+          <div class="progress" style="height: 6px;" role="progressbar" aria-valuenow="${porcentaje}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar ${colorBar}" style="width: ${porcentaje}%"></div>
+          </div>
+        `;
+        areasGrid.appendChild(itemArea);
+      });
+
+      const recomendacionesMap = {
+        geografia: 'Se sugiere profundizar en la delimitación de departamentos, accidentes geográficos de las cordilleras y la ubicación de las regiones naturales.',
+        historia: 'Es recomendable repasar los hitos de la Campaña Libertadora de 1819, las figuras próceres y los acontecimientos sociopolíticos del siglo XX.',
+        cultura: 'Se sugiere revisar el folclor tradicional de las regiones colombianas, gastronomía autóctona y celebraciones declaradas Patrimonio de la Humanidad.',
+        deportes: 'Se aconseja repasar las hazañas del ciclismo nacional en Europa, campeones olímpicos y los máximos logros del fútbol colombiano.',
+        naturaleza: 'Es recomendable afianzar conceptos sobre los pisos térmicos, páramos de alta montaña (frailejones) y especies endémicas de la fauna colombiana.'
+      };
+
+      if (recomendacionTexto) {
+        if (menorPorcentaje === 100) {
+          recomendacionTexto.textContent = '¡Felicitaciones! Has demostrado un dominio sobresaliente y equilibrado en todas las áreas evaluadas en esta sesión.';
+        } else if (peorCategoria && recomendacionesMap[peorCategoria]) {
+          recomendacionTexto.textContent = `${recomendacionesMap[peorCategoria]}`;
+        } else {
+          recomendacionTexto.textContent = 'Repasa las preguntas falladas en la auditoría inferior para consolidar tus conocimientos.';
+        }
+      }
+    }
+
+    // Configurar filtros interactivos de auditoría de preguntas
+    const btnFiltroTodos = document.getElementById('btn-filtro-todos');
+    const btnFiltroAciertos = document.getElementById('btn-filtro-aciertos');
+    const btnFiltroErrores = document.getElementById('btn-filtro-errores');
+    const conteoAciertos = document.getElementById('conteo-filtro-aciertos');
+    const conteoErrores = document.getElementById('conteo-filtro-errores');
+
+    if (conteoAciertos) conteoAciertos.textContent = resumen.aciertos;
+    if (conteoErrores) conteoErrores.textContent = resumen.errores;
+    if (btnFiltroTodos) btnFiltroTodos.textContent = `Todos (${resumen.totalPreguntas})`;
+
+    const aplicarFiltro = (filtro) => {
+      [btnFiltroTodos, btnFiltroAciertos, btnFiltroErrores].forEach(btn => {
+        if (btn) btn.classList.remove('active');
+      });
+
+      const cards = contenedorRevision.querySelectorAll('.revision-item');
+      cards.forEach(card => {
+        if (filtro === 'todos') {
+          card.classList.remove('d-none');
+        } else if (filtro === 'aciertos') {
+          card.classList.toggle('d-none', !card.classList.contains('acierto'));
+        } else if (filtro === 'errores') {
+          card.classList.toggle('d-none', !card.classList.contains('error'));
+        }
+      });
+    };
+
+    if (btnFiltroTodos) {
+      btnFiltroTodos.onclick = () => {
+        btnFiltroTodos.classList.add('active');
+        aplicarFiltro('todos');
+      };
+    }
+    if (btnFiltroAciertos) {
+      btnFiltroAciertos.onclick = () => {
+        btnFiltroAciertos.classList.add('active');
+        aplicarFiltro('aciertos');
+      };
+    }
+    if (btnFiltroErrores) {
+      btnFiltroErrores.onclick = () => {
+        btnFiltroErrores.classList.add('active');
+        aplicarFiltro('errores');
+      };
     }
 
     // Celebración con Confetti al finalizar con buen resultado
