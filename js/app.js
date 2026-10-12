@@ -315,17 +315,82 @@ const App = {
       });
     }
 
-    // Logo interactivo para volver al inicio
+    // Modal accesible de confirmación para salir de partida activa
+    const modalSalir = document.getElementById('modal-confirmar-salir');
+    const btnCancelarSalir = document.getElementById('btn-cancelar-salir-partida');
+    const btnConfirmarSalir = document.getElementById('btn-confirmar-salir-partida');
+    const btnAbandonarPartida = document.getElementById('btn-abandonar-partida');
+
+    const intentarSalirPartida = () => {
+      const enPartida = (Juego.intervaloTemporizador !== null) || 
+        (UI.pantallas.juego && UI.pantallas.juego.classList.contains('pantalla--activa') && !Juego.estado.haRespondido);
+
+      if (enPartida) {
+        // Pausar temporizador durante la confirmación
+        Juego.estado.enPausa = true;
+
+        if (modalSalir) {
+          if (typeof modalSalir.showModal === 'function') {
+            modalSalir.showModal();
+          } else {
+            modalSalir.setAttribute('open', '');
+          }
+        }
+      } else {
+        UI.cambiarPantalla('inicio');
+      }
+    };
+
     const btnLogo = document.getElementById('btn-ir-inicio-logo');
     if (btnLogo) {
-      btnLogo.addEventListener('click', () => {
-        if (Juego.intervaloTemporizador) {
-          if (!confirm('¿Deseas salir de la partida actual? El progreso no guardado se perderá.')) {
-            return;
-          }
-          Juego.detenerTemporizador();
+      btnLogo.addEventListener('click', (e) => {
+        e.preventDefault();
+        intentarSalirPartida();
+      });
+      btnLogo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          intentarSalirPartida();
+        }
+      });
+    }
+
+    if (btnAbandonarPartida) {
+      btnAbandonarPartida.addEventListener('click', (e) => {
+        e.preventDefault();
+        intentarSalirPartida();
+      });
+    }
+
+    if (btnCancelarSalir && modalSalir) {
+      btnCancelarSalir.addEventListener('click', () => {
+        Juego.estado.enPausa = false;
+        if (typeof modalSalir.close === 'function') {
+          modalSalir.close();
+        } else {
+          modalSalir.removeAttribute('open');
+        }
+        UI.mostrarToast('Evaluación reanudada', 'bi-play-fill');
+      });
+    }
+
+    if (btnConfirmarSalir && modalSalir) {
+      btnConfirmarSalir.addEventListener('click', () => {
+        Juego.detenerTemporizador();
+        Juego.estado.enPausa = false;
+        if (typeof modalSalir.close === 'function') {
+          modalSalir.close();
+        } else {
+          modalSalir.removeAttribute('open');
         }
         UI.cambiarPantalla('inicio');
+        UI.mostrarToast('Partida cancelada. Regresaste al inicio.', 'bi-door-closed');
+      });
+    }
+
+    if (modalSalir) {
+      modalSalir.addEventListener('cancel', () => {
+        Juego.estado.enPausa = false;
       });
     }
 
@@ -513,6 +578,14 @@ const App = {
       btnVolverInicioResultado.addEventListener('click', () => UI.cambiarPantalla('inicio'));
     }
 
+    // Botón Imprimir Ficha Oficial Académica
+    const btnImprimirResultado = document.getElementById('btn-imprimir-resultado');
+    if (btnImprimirResultado) {
+      btnImprimirResultado.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
     // Botón Copiar Ficha de Resultados al Portapapeles
     const btnCopiarResumen = document.getElementById('btn-copiar-resumen');
     if (btnCopiarResumen) {
@@ -651,6 +724,7 @@ const App = {
         } else {
           modalBorrar.removeAttribute('open');
         }
+        UI.mostrarToast('El cuadro de clasificación ha sido reiniciado', 'bi-trash3-fill');
         UI.anunciar('El ranking ha sido borrado exitosamente.');
       });
     }
@@ -706,7 +780,7 @@ const App = {
       }
 
       // Tecla Enter o Espacio para avanzar si la retroalimentación está visible
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' || e.code === 'Space') {
         const btnSiguiente = document.getElementById('btn-siguiente-pregunta');
         const boxRetro = document.getElementById('box-retroalimentacion');
         if (boxRetro && boxRetro.classList.contains('visible') && btnSiguiente) {
@@ -743,7 +817,7 @@ const App = {
       Juego.iniciarTemporizador(20);
     } catch (err) {
       console.error(err);
-      alert('Error al iniciar la partida: ' + err.message);
+      UI.mostrarToast('Error al iniciar la evaluación: ' + err.message, 'bi-exclamation-triangle-fill');
     }
   },
 
@@ -776,7 +850,8 @@ const App = {
   activarComodin(tipo) {
     const resultado = Juego.usarComodin(tipo);
     if (!resultado.exito) {
-      alert(resultado.mensaje || 'No fue posible usar el comodín');
+      UI.mostrarToast(resultado.mensaje || 'No fue posible usar el comodín', 'bi-exclamation-circle-fill');
+      UI.anunciar(resultado.mensaje || 'Comodín no disponible');
       return;
     }
 

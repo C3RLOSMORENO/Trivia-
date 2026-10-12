@@ -642,6 +642,19 @@ body {
   filter: grayscale(1);
 }
 
+.opcion-btn.atenuada {
+  opacity: 0.42 !important;
+  filter: grayscale(0.6);
+  pointer-events: none;
+  border-style: dashed !important;
+}
+
+.opcion-estado-badge {
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  animation: fadeInApp 0.2s ease;
+}
+
 /* Panel de Retroalimentación */
 .retroalimentacion-box {
   transition: all var(--transition-fast);
@@ -813,7 +826,9 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 16px;
   background-color: var(--bg-surface);
-  max-width: 460px;
+  max-width: 480px;
+  width: min(92vw, 480px);
+  margin: auto;
   padding: 0;
   box-shadow: var(--shadow-xl);
 }
@@ -969,3 +984,60 @@ body {
 [data-text-size="large"] .pregunta-enunciado {
   font-size: 1.45rem;
 }
+
+/* ==========================================================================
+   ESTILOS OFICIALES PARA IMPRESIÓN Y EXPORTACIÓN (@media print)
+   ========================================================================== */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+
+  .app-header,
+  .app-footer,
+  .header-controls,
+  .pantalla:not(#pantalla-resultado),
+  .d-print-none,
+  #modal-atajos,
+  .toast-container {
+    display: none !important;
+  }
+
+  #pantalla-resultado {
+    display: block !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .app-card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .card-body {
+    padding: 0 !important;
+  }
+
+  .score-display-box {
+    border: 1px solid #CBD5E1 !important;
+    background-color: #F8FAFC !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .metric-card {
+    border: 1px solid #E2E8F0 !important;
+    page-break-inside: avoid;
+  }
+
+  .revision-item {
+    page-break-inside: avoid;
+    border: 1px solid #CBD5E1 !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+

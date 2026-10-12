@@ -107,7 +107,7 @@ const Juego = {
       const opcionesMezcladas = this.mezclar(pregunta.opciones);
       const nuevoIndiceCorrecto = opcionesMezcladas.indexOf(textoCorrecto);
 
-      return {
+        return {
         id: pregunta.id,
         categoria: pregunta.categoria,
         dificultad: pregunta.dificultad,
@@ -115,6 +115,8 @@ const Juego = {
         opciones: opcionesMezcladas,
         correcta: nuevoIndiceCorrecto,
         explicacion: pregunta.explicacion,
+        imagen: pregunta.imagen || '',
+        fuenteImagen: pregunta.fuenteImagen || '',
         opcionesDescartadas: [] // Llenado si se usa el comodín 50/50
       };
     });
@@ -266,12 +268,17 @@ const Juego = {
       this.estado.puntaje += puntosGanados;
 
       if (pregunta.categoria && this.estado.desgloseCategorias[pregunta.categoria]) {
+        this.estado.desgloseCategorias[pregunta.categoria].total += 1;
         this.estado.desgloseCategorias[pregunta.categoria].aciertos += 1;
       }
     } else {
       this.estado.errores += 1;
       this.estado.racha = 0; // Se rompe la racha
       puntosGanados = 0;
+
+      if (pregunta.categoria && this.estado.desgloseCategorias[pregunta.categoria]) {
+        this.estado.desgloseCategorias[pregunta.categoria].total += 1;
+      }
     }
 
     const resultado = {
@@ -284,9 +291,15 @@ const Juego = {
         : 'Tiempo agotado',
       opcionCorrectaTexto: pregunta.opciones[pregunta.correcta],
       explicacion: pregunta.explicacion,
+      imagen: pregunta.imagen || '',
+      fuenteImagen: pregunta.fuenteImagen || '',
+      base: esCorrecta ? 100 : 0,
       puntosGanados,
       bonoTiempo,
       bonoRacha,
+      multiplicador,
+      dificultad: this.estado.dificultad,
+      categoria: pregunta.categoria,
       tiempoSobrante,
       rachaActual: this.estado.racha,
       puntajeTotal: this.estado.puntaje
