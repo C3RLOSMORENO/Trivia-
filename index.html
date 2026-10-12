@@ -478,19 +478,25 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" id="barra-progreso-fill" style="width: 10%;"></div>
               </div>
 
-              <!-- Barra de Comodines Técnicos -->
-              <div class="comodines-barra d-flex flex-wrap align-items-center justify-content-between p-2 px-3 rounded-3 bg-body-tertiary border mb-4" aria-label="Comodines disponibles">
-                <span class="small text-secondary fw-medium">
-                  <i class="bi bi-wrench me-1 text-primary" aria-hidden="true"></i> Comodines (-30 pts):
-                </span>
-                <div class="comodines-botones d-flex gap-2">
-                  <button id="btn-comodin-5050" class="btn btn-sm btn-comodin" type="button" title="Descarta 2 opciones incorrectas (Atajo: C)" aria-keyshortcuts="C">
-                    <i class="bi bi-scissors me-1" aria-hidden="true"></i> 50 / 50 <kbd class="ms-1">C</kbd>
-                  </button>
-                  <button id="btn-comodin-tiempo" class="btn btn-sm btn-comodin" type="button" title="Suma 10 segundos al reloj (Atajo: T)" aria-keyshortcuts="T">
-                    <i class="bi bi-alarm me-1" aria-hidden="true"></i> +10 seg <kbd class="ms-1">T</kbd>
-                  </button>
+              <!-- Barra de Comodines Técnicos y Salida -->
+              <div class="comodines-barra d-flex flex-wrap align-items-center justify-content-between p-2 px-3 rounded-3 bg-body-tertiary border mb-4 gap-2" aria-label="Comodines disponibles y control de partida">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="small text-secondary fw-medium">
+                    <i class="bi bi-wrench me-1 text-primary" aria-hidden="true"></i> Comodines (-30 pts):
+                  </span>
+                  <div class="comodines-botones d-flex gap-2">
+                    <button id="btn-comodin-5050" class="btn btn-sm btn-comodin" type="button" title="Descarta 2 opciones incorrectas (Atajo: C)" aria-keyshortcuts="C">
+                      <i class="bi bi-scissors me-1" aria-hidden="true"></i> 50 / 50 <kbd class="ms-1">C</kbd>
+                    </button>
+                    <button id="btn-comodin-tiempo" class="btn btn-sm btn-comodin" type="button" title="Suma 10 segundos al reloj (Atajo: T)" aria-keyshortcuts="T">
+                      <i class="bi bi-alarm me-1" aria-hidden="true"></i> +10 seg <kbd class="ms-1">T</kbd>
+                    </button>
+                  </div>
                 </div>
+
+                <button id="btn-abandonar-partida" class="btn btn-sm btn-outline-danger" type="button" title="Abandonar evaluación actual">
+                  <i class="bi bi-box-arrow-left me-1" aria-hidden="true"></i> Salir
+                </button>
               </div>
 
               <!-- =============================================== -->
@@ -950,6 +956,32 @@
         </button>
         <button id="btn-confirmar-borrar-ranking" class="btn btn-danger btn-sm px-3" type="button">
           Sí, eliminar registros
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ======================================================== -->
+  <!-- MODAL ACCESIBLE: CONFIRMACIÓN PARA ABANDONAR PARTIDA     -->
+  <!-- ======================================================== -->
+  <dialog id="modal-confirmar-salir" class="modal-dialog-accessible" aria-labelledby="modal-titulo-salir" aria-modal="true">
+    <div class="p-4">
+      <div class="d-flex align-items-center gap-2 text-warning mb-2">
+        <i class="bi bi-door-open-fill fs-3" aria-hidden="true"></i>
+        <h2 id="modal-titulo-salir" class="h5 fw-bold mb-0 text-body">¿Abandonar la partida en curso?</h2>
+      </div>
+      <p class="text-secondary small mb-3">
+        El temporizador ha sido pausado. Si decides salir ahora al menú principal, el progreso actual se cancelará y no se registrará puntuación en el cuadro de clasificación.
+      </p>
+      <div class="p-2 px-3 rounded-2 bg-body-tertiary border small text-muted mb-4">
+        <i class="bi bi-info-circle me-1 text-primary"></i> Podrás iniciar una nueva evaluación en cualquier momento desde el inicio.
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button id="btn-cancelar-salir-partida" class="btn btn-outline-secondary btn-sm px-3" type="button">
+          Continuar Jugando
+        </button>
+        <button id="btn-confirmar-salir-partida" class="btn btn-danger btn-sm px-3 fw-medium" type="button">
+          Sí, Salir al Menú
         </button>
       </div>
     </div>

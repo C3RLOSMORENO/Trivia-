@@ -826,7 +826,9 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 16px;
   background-color: var(--bg-surface);
-  max-width: 460px;
+  max-width: 480px;
+  width: min(92vw, 480px);
+  margin: auto;
   padding: 0;
   box-shadow: var(--shadow-xl);
 }
