@@ -379,22 +379,109 @@ body {
   transition: all var(--transition-fast);
 }
 
-.temporizador-reloj.peligro {
-  border-color: var(--co-rojo);
-  background-color: var(--co-rojo-subtle);
-  color: var(--co-rojo);
-  animation: pulseTimer 1s infinite alternate;
+/* Temporizador Radial SVG Moderno */
+.temporizador-radial-wrapper {
+  width: 68px;
+  height: 68px;
 }
 
-@keyframes pulseTimer {
-  from {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
-  }
-  to {
-    transform: scale(1.06);
-    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
-  }
+.radial-timer-svg {
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.radial-timer-bg {
+  stroke: var(--border-color);
+}
+
+.radial-timer-circle {
+  stroke: var(--co-azul);
+  stroke-dasharray: 176;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.85s linear, stroke 0.3s ease;
+}
+
+.radial-timer-circle.alerta-media {
+  stroke: var(--co-amarillo) !important;
+}
+
+.radial-timer-circle.alerta-peligro {
+  stroke: var(--co-rojo) !important;
+}
+
+.temporizador-radial-wrapper.peligro {
+  animation: pulseRadial 0.85s infinite alternate;
+}
+
+@keyframes pulseRadial {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(220, 38, 38, 0)); }
+  100% { transform: scale(1.08); filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.6)); }
+}
+
+/* Stepper de Reactivos de la Ronda */
+.stepper-reactivos-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+  background-color: var(--bg-surface-alt);
+  border: 1px solid var(--border-color);
+  scrollbar-width: none;
+}
+
+.stepper-reactivos-container::-webkit-scrollbar {
+  display: none;
+}
+
+.stepper-pill {
+  flex: 1;
+  min-width: 26px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1.5px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.stepper-pill.activo {
+  border-color: var(--co-azul) !important;
+  background-color: var(--co-azul-subtle) !important;
+  color: var(--co-azul) !important;
+  font-weight: 800;
+  transform: scale(1.08);
+  animation: pulseStepper 1.2s infinite alternate;
+}
+
+@keyframes pulseStepper {
+  0% { box-shadow: 0 0 0 1px rgba(0, 56, 147, 0.2); }
+  100% { box-shadow: 0 0 0 5px rgba(0, 56, 147, 0.35); }
+}
+
+.stepper-pill.acierto {
+  border-color: var(--co-verde) !important;
+  background-color: var(--co-verde) !important;
+  color: #FFFFFF !important;
+}
+
+.stepper-pill.error {
+  border-color: var(--co-rojo) !important;
+  background-color: var(--co-rojo) !important;
+  color: #FFFFFF !important;
+}
+
+.stepper-pill.pendiente {
+  border-color: var(--border-color);
+  background-color: var(--bg-surface-alt);
+  color: var(--text-muted);
 }
 
 .racha-chip {
@@ -833,10 +920,82 @@ body {
   box-shadow: var(--shadow-xl);
 }
 
-.modal-dialog-accessible::backdrop {
-  background-color: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+/* Insignias de Logro en Resultados (Gamificación) */
+.insignia-card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-surface);
+  padding: 0.85rem 1rem;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+}
+
+.insignia-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.insignia-icono-box {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.insignia-card.desbloqueada .insignia-icono-box {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #92400E;
+  border: 1px solid #F59E0B;
+}
+
+.insignia-card.bloqueada {
+  opacity: 0.55;
+  filter: grayscale(0.85);
+  border-style: dashed;
+}
+
+.insignia-card.bloqueada .insignia-icono-box {
+  background-color: var(--bg-surface-alt);
+  color: var(--text-muted);
+}
+
+/* Modal Lightbox de Fotografía */
+.modal-dialog-lightbox {
+  border: none;
+  border-radius: 16px;
+  background-color: rgba(15, 23, 42, 0.96);
+  max-width: 860px;
+  width: min(94vw, 860px);
+  margin: auto;
+  padding: 0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.modal-dialog-lightbox::backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.pregunta-imagen-wrapper {
+  cursor: pointer;
+}
+
+.pregunta-imagen-zoom-hint {
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.pregunta-imagen-wrapper:hover .pregunta-imagen-zoom-hint {
+  opacity: 1;
 }
 
 /* ==========================================================================

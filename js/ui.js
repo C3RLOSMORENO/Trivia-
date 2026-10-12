@@ -174,20 +174,84 @@ const UI = {
       boxRetro.classList.remove('visible', 'retroalimentacion-box--acierto', 'retroalimentacion-box--error');
     }
 
+    // Actualizar stepper interactivo de reactivos
+    this.renderizarStepper(numeroPregunta, totalPreguntas, Juego.estado ? Juego.estado.historialRespuestas : []);
+
     this.anunciar(`Pregunta ${numeroPregunta} de ${totalPreguntas}: ${pregunta.enunciado}`);
   },
 
   /**
-   * Actualiza el reloj del temporizador
+   * Renderiza el stepper de 10 reactivos interactivos de la ronda
+   */
+  renderizarStepper(numeroActual, total = 10, historial = []) {
+    const container = document.getElementById('stepper-reactivos');
+    const textoConteo = document.getElementById('stepper-conteo-texto');
+
+    if (textoConteo) {
+      textoConteo.textContent = `Reactivo ${numeroActual} de ${total}`;
+    }
+
+    if (!container) return;
+    container.innerHTML = '';
+
+    for (let i = 1; i <= total; i++) {
+      const pill = document.createElement('div');
+      pill.className = 'stepper-pill';
+      pill.dataset.numero = i;
+
+      const respuestaPrevia = Array.isArray(historial) ? historial.find(h => h.numero === i) : null;
+
+      if (i === numeroActual) {
+        pill.classList.add('activo');
+        pill.innerHTML = `<span>${i}</span>`;
+        pill.setAttribute('title', `Reactivo ${i} (En curso)`);
+      } else if (respuestaPrevia) {
+        if (respuestaPrevia.esCorrecta) {
+          pill.classList.add('acierto');
+          pill.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i>';
+          pill.setAttribute('title', `Reactivo ${i}: Acertado`);
+        } else {
+          pill.classList.add('error');
+          pill.innerHTML = '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+          pill.setAttribute('title', `Reactivo ${i}: Incorrecto`);
+        }
+      } else {
+        pill.classList.add('pendiente');
+        pill.innerHTML = `<span>${i}</span>`;
+        pill.setAttribute('title', `Reactivo ${i} (Pendiente)`);
+      }
+
+      container.appendChild(pill);
+    }
+  },
+
+  /**
+   * Actualiza el reloj del temporizador radial circular SVG
    */
   actualizarTemporizador(segundos, porcentaje) {
     const reloj = document.getElementById('reloj-cuenta-regresiva');
     const numero = document.getElementById('tiempo-restante-numero');
+    const radialProgress = document.getElementById('radial-timer-progress');
 
     if (numero) numero.textContent = segundos;
+
+    // Animar anillo circular SVG radial (circunferencia r=28 es 175.93)
+    if (radialProgress) {
+      const perimetro = 175.93;
+      const offset = perimetro - (perimetro * (porcentaje / 100));
+      radialProgress.style.strokeDashoffset = `${offset}`;
+
+      radialProgress.classList.remove('alerta-media', 'alerta-peligro');
+      if (segundos <= 4) {
+        radialProgress.classList.add('alerta-peligro');
+      } else if (segundos <= 8) {
+        radialProgress.classList.add('alerta-media');
+      }
+    }
+
     if (reloj) {
       reloj.setAttribute('aria-label', `Segundos restantes: ${segundos}`);
-      if (segundos <= 5) {
+      if (segundos <= 4) {
         reloj.classList.add('peligro');
       } else {
         reloj.classList.remove('peligro');
@@ -201,6 +265,21 @@ const UI = {
    */
   mostrarRetroalimentacion(resultado) {
     if (!resultado) return;
+
+    // Actualizar píldora del stepper en tiempo real
+    if (Juego.estado) {
+      const pillActual = document.querySelector(`.stepper-pill[data-numero="${Juego.estado.indiceActual + 1}"]`);
+      if (pillActual) {
+        pillActual.classList.remove('activo');
+        if (resultado.esCorrecta) {
+          pillActual.classList.add('acierto');
+          pillActual.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i>';
+        } else {
+          pillActual.classList.add('error');
+          pillActual.innerHTML = '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+        }
+      }
+    }
 
     const contenedorOpciones = document.getElementById('contenedor-opciones');
     if (contenedorOpciones) {
@@ -290,12 +369,13 @@ const UI = {
 
       if (comparativaRespuestas) comparativaRespuestas.classList.add('d-none');
 
-      // Celebración Confetti sutil
+      // Celebración Confetti sutil tricolor colombiano
       if (typeof window.confetti === 'function') {
         window.confetti({
-          particleCount: resultado.bonoRacha > 0 ? 40 : 20,
-          spread: 60,
-          origin: { y: 0.7 }
+          particleCount: resultado.bonoRacha > 0 ? 45 : 24,
+          spread: 65,
+          origin: { y: 0.7 },
+          colors: ['#FCD116', '#003893', '#CE1126']
         });
       }
     } else {
@@ -597,13 +677,93 @@ const UI = {
       };
     }
 
-    // Celebración con Confetti al finalizar con buen resultado
+    // Renderizar Insignias de Logro de la Sesión (Gamificación)
+    const gridInsignias = document.getElementById('grid-insignias-logro');
+    const contadorInsignias = document.getElementById('contador-insignias-obtenidas');
+
+    if (gridInsignias) {
+      gridInsignias.innerHTML = '';
+
+      const sinComodines = Juego.estado ? (Juego.estado.comodines.cincuenta && Juego.estado.comodines.tiempo) : false;
+      const tiempoPromedio = resumen.totalPreguntas > 0 ? Math.round(resumen.tiempoTotalSeg / resumen.totalPreguntas) : 0;
+
+      const catalogoInsignias = [
+        {
+          id: 'precision',
+          nombre: 'Precisión Impecable',
+          descripcion: 'Alcanzaste 80% o más de aciertos en la evaluación.',
+          icono: '🎯',
+          desbloqueada: resumen.porcentajeAciertos >= 80
+        },
+        {
+          id: 'racha',
+          nombre: 'Racha Libertadora',
+          descripcion: 'Encadenaste una racha de 3 o más aciertos consecutivos.',
+          icono: '🔥',
+          desbloqueada: resumen.mejorRacha >= 3
+        },
+        {
+          id: 'rapidez',
+          nombre: 'Reflejos de Cóndor',
+          descripcion: 'Respondiste con gran agilidad (promedio menor a 8 segundos).',
+          icono: '⚡',
+          desbloqueada: tiempoPromedio <= 8
+        },
+        {
+          id: 'estrategia',
+          nombre: 'Estratega Puro',
+          descripcion: 'Completaste la partida sin apoyarte en comodines de ayuda.',
+          icono: '🛡️',
+          desbloqueada: sinComodines
+        },
+        {
+          id: 'colombia',
+          nombre: 'Orgullo Nacional',
+          descripcion: 'Completaste satisfactoriamente los 10 reactivos patrios.',
+          icono: '🇨🇴',
+          desbloqueada: resumen.aciertos >= 5
+        }
+      ];
+
+      let totalDesbloqueadas = 0;
+
+      catalogoInsignias.forEach(ins => {
+        if (ins.desbloqueada) totalDesbloqueadas += 1;
+
+        const col = document.createElement('div');
+        col.className = 'col-12 col-md-6';
+        col.innerHTML = `
+          <div class="insignia-card ${ins.desbloqueada ? 'desbloqueada' : 'bloqueada'}">
+            <div class="insignia-icono-box" aria-hidden="true">
+              ${ins.icono}
+            </div>
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center justify-content-between gap-1">
+                <span class="fw-bold small text-body">${ins.nombre}</span>
+                <span class="badge ${ins.desbloqueada ? 'text-bg-warning text-dark' : 'text-bg-secondary'} small" style="font-size: 0.68rem;">
+                  ${ins.desbloqueada ? '<i class="bi bi-unlock-fill me-1"></i>Conseguida' : '<i class="bi bi-lock-fill me-1"></i>Bloqueada'}
+                </span>
+              </div>
+              <p class="text-secondary small mb-0" style="font-size: 0.8rem;">${ins.descripcion}</p>
+            </div>
+          </div>
+        `;
+        gridInsignias.appendChild(col);
+      });
+
+      if (contadorInsignias) {
+        contadorInsignias.textContent = `${totalDesbloqueadas} de ${catalogoInsignias.length} desbloqueadas`;
+      }
+    }
+
+    // Celebración con Confetti Tricolor al finalizar con buen resultado
     if (typeof window.confetti === 'function' && resumen.porcentajeAciertos >= 60) {
       setTimeout(() => {
         window.confetti({
-          particleCount: 90,
-          spread: 80,
-          origin: { y: 0.55 }
+          particleCount: 95,
+          spread: 90,
+          origin: { y: 0.55 },
+          colors: ['#FCD116', '#003893', '#CE1126']
         });
       }, 300);
     }

@@ -578,11 +578,52 @@ const App = {
       btnVolverInicioResultado.addEventListener('click', () => UI.cambiarPantalla('inicio'));
     }
 
-    // Botón Imprimir Ficha Oficial Académica
-    const btnImprimirResultado = document.getElementById('btn-imprimir-resultado');
-    if (btnImprimirResultado) {
-      btnImprimirResultado.addEventListener('click', () => {
-        window.print();
+    // Modal Lightbox para ampliar fotografía contextual
+    const modalLightbox = document.getElementById('modal-lightbox-imagen');
+    const contenedorImg = document.getElementById('contenedor-pregunta-imagen');
+    const btnCerrarLightboxX = document.getElementById('btn-cerrar-lightbox-x');
+    const lightboxImg = document.getElementById('lightbox-img-elem');
+    const lightboxTitulo = document.getElementById('lightbox-titulo');
+    const lightboxCredito = document.getElementById('lightbox-credito');
+
+    const abrirLightbox = () => {
+      const pregunta = Juego.obtenerPreguntaActual();
+      if (!pregunta || !pregunta.imagen || !modalLightbox) return;
+
+      if (lightboxImg) lightboxImg.src = pregunta.imagen;
+      if (lightboxTitulo) lightboxTitulo.textContent = pregunta.enunciado;
+      if (lightboxCredito) lightboxCredito.textContent = pregunta.fuenteImagen || 'Wikimedia Commons';
+
+      if (typeof modalLightbox.showModal === 'function') {
+        modalLightbox.showModal();
+      } else {
+        modalLightbox.setAttribute('open', '');
+      }
+    };
+
+    const cerrarLightbox = () => {
+      if (!modalLightbox) return;
+      if (typeof modalLightbox.close === 'function') {
+        modalLightbox.close();
+      } else {
+        modalLightbox.removeAttribute('open');
+      }
+    };
+
+    if (contenedorImg) {
+      contenedorImg.addEventListener('click', abrirLightbox);
+      contenedorImg.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          abrirLightbox();
+        }
+      });
+    }
+
+    if (btnCerrarLightboxX) btnCerrarLightboxX.addEventListener('click', cerrarLightbox);
+    if (modalLightbox) {
+      modalLightbox.addEventListener('click', (e) => {
+        if (e.target === modalLightbox) cerrarLightbox();
       });
     }
 
@@ -598,14 +639,13 @@ const App = {
         const tiempo = document.getElementById('resumen-tiempo-total')?.textContent || '0s';
         const dictamen = document.getElementById('resultado-mensaje-motivo')?.textContent || '';
 
-        const textoFicha = `🇨🇴 Trivia Colombia - Ficha Oficial de Resultados\n` +
+        const textoFicha = `🇨🇴 Trivia Colombia - Saberes y Cultura Nacional\n` +
           `• Participante: ${jugador}\n` +
           `• Puntuación Total: ${puntaje} pts\n` +
           `• Reactivos Acertados: ${aciertos} (${efectividad})\n` +
           `• Mayor Racha Consecutiva: ${racha}\n` +
           `• Tiempo Invertido: ${tiempo}\n` +
-          `• Evaluación Pedagógica: ${dictamen.trim()}\n` +
-          `• Entorno Académico: Universidad de Santander (UDES)`;
+          `• Dictamen de Desempeño: ${dictamen.trim()}`;
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(textoFicha).then(() => {
